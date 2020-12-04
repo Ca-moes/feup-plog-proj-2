@@ -7,7 +7,7 @@ star(L):-
 
   % Colocação das Restrições
   all_distinct(L),
-  A-C #= F+I,  % 1
+  C-A #= I+F,  % 1
   A*D #= G*J,  % 2
   B+C #= D*E,  % 3
   B*F #= H*J,  % 4
