@@ -1,6 +1,16 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 
+% Prints to the console all of the stars that are possible to be made
+print_all_comb:-
+  star(ResultList, L), fail.
+
+save_all_comb:-
+  open('test.txt', write, S1),
+  set_output(S1),
+  print_all_comb.
+
+
 % Necessário mudar working directory para pasta de projeto no SicStus 
 write_to_file:-
   open('test.txt', write, S1),
@@ -9,8 +19,6 @@ write_to_file:-
   flush_output(S1),
   close(S1).
   
-
-
 star(Operators, L):-
   % Definição das Variáveis e Domínios
   L = [A, B, C, D, E, F, G, H, I, J],
@@ -42,7 +50,7 @@ star(Operators, L):-
 
   % Pesquisa da solução
   labeling([], L),
-  print_star(L, _).
+  print_option(L, Operators).
 
 apply_restriction(-, Var1, Var2, Value):-
   Var1-Var2 #= Value.
@@ -53,7 +61,19 @@ apply_restriction(*, Var1, Var2, Value):-
 apply_restriction(/, Var1, Var2, Value):-
   Var1/Var2 #= Value.
 
-
+print_option(NumberList, OperatorList):-
+  nth0(0, OperatorList, Op0),
+  nth0(1, OperatorList, Op1),
+  nth0(2, OperatorList, Op2),
+  nth0(3, OperatorList, Op3),
+  nth0(4, OperatorList, Op4),
+  nth0(5, OperatorList, Op5),
+  nth0(6, OperatorList, Op6),
+  nth0(7, OperatorList, Op7),
+  nth0(8, OperatorList, Op8),
+  nth0(9, OperatorList, Op9),
+  format('[~w,~w,~w,~w,~w,~w,~w,~w,~w,~w]\n', [Op0, Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9]),
+  write(NumberList), nl, nl.
 print_star(NumberList, OperatorList):-
   nth0(0, NumberList, A),
   nth0(1, NumberList, B),
@@ -65,52 +85,35 @@ print_star(NumberList, OperatorList):-
   nth0(7, NumberList, H),
   nth0(8, NumberList, I),
   nth0(9, NumberList, J),
-  write('                                          '), nl, 
-  format('                   ~d                      ', [A]), nl,
-  write('                                          '), nl, 
-  write('                -     x                   '), nl, 
-  write('                                          '), nl, 
-  write('                                          '), nl,
-  format('~d      +      ~d    =    ~d      x       ~d  ', [B,C,D,E]), nl,
-  write('                                          '), nl, 
-  write('    x       =              =       -      '), nl, 
-  write('                                          '), nl, 
-  format('         ~d                   ~d            ', [F,G]), nl,
-  write('             =          =                 '), nl, 
-  write('                                          '), nl, 
-  format('      +            ~d            x         ', [H]), nl,
-  write('                                          '), nl, 
-  write('           +              x               '), nl, 
-  write('                                          '), nl, 
-  format('   ~d                               ~d      ', [I,J]), nl,
-  write('                                          ').
-
-
-
-
-
-f(X,Y):-Y is X*X.
-map([],_,[]).
-map([C|R],Transfor,[TC|CR]):-
- aplica(Transfor, [C,TC]),
- map(R,Transfor,CR).
-
-aplica(P,LArgs) :- G =.. [P|LArgs], G.
-
-/*
-1      1 Call: map([2,4,8],f,_1009) ? 
-2      2 Call: aplica(f,[2,_2097]) ? 
-3      3 Call: _3069=..[f,2,_2097] ? 
-3      3 Exit: f(2,_2097)=..[f,2,_2097] ? 
-4      3 Call: call(user:f(2,_2097)) ? 
-5      4 Call: f(2,_2097) ? 
-6      5 Call: _2097 is 2*2 ? 
-6      5 Exit: 4 is 2*2 ? 
-5      4 Exit: f(2,4) ? 
-4      3 Exit: call(user:f(2,4)) ? 
-2      2 Exit: aplica(f,[2,4]) ?
-*/
-
+  nth0(0, OperatorList, Op0),
+  nth0(1, OperatorList, Op1),
+  nth0(2, OperatorList, Op2),
+  nth0(3, OperatorList, Op3),
+  nth0(4, OperatorList, Op4),
+  nth0(5, OperatorList, Op5),
+  nth0(6, OperatorList, Op6),
+  nth0(7, OperatorList, Op7),
+  nth0(8, OperatorList, Op8),
+  nth0(9, OperatorList, Op9),
+  write('                                                 '), nl, 
+  format('                   ~d                           ', [A]), nl,
+  write('                                                 '), nl,
+  format('                ~w     ~w                       ', [Op0, Op1]), nl,
+  write('                                                 '), nl, 
+  write('                                                 '), nl,
+  format('~d      ~w      ~d    =    ~d      ~w       ~d  ', [B,Op2,C,D,Op3,E]), nl,
+  write('                                                 '), nl, 
+  format('    ~w       =              =       ~w          ', [Op4, Op5]), nl,
+  write('                                                 '), nl, 
+  format('         ~d                   ~d                ', [F,G]), nl,
+  write('             =          =                        '), nl, 
+  write('                                                 '), nl, 
+  format('      ~w            ~d            ~w            ', [Op6,H,Op7]), nl,
+  write('                                                 '), nl, 
+  format('           ~w              ~w                   ',[Op8, Op9]), nl,
+  write('                                                 '), nl, 
+  format('   ~d                               ~d          ', [I,J]), nl,
+  write('                                                 ').
 
 /*
                                           
