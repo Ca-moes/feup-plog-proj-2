@@ -1,9 +1,16 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 
-operator(1,+).
+% Necessário mudar working directory para pasta de projeto no SicStus 
+write_to_file:-
+  open('test.txt', write, S1),
+  set_output(S1),
+  write('test 1234\n'),
+  flush_output(S1),
+  close(S1).
+  
 
-% star([1,2,3,4,5,6,7,8,9,10], L).
+
 star(Operators, L):-
   % Definição das Variáveis e Domínios
   L = [A, B, C, D, E, F, G, H, I, J],
@@ -11,14 +18,6 @@ star(Operators, L):-
 
   % Colocação das Restrições
   all_distinct(L),
-  /* C-A #= I+F,  % 1
-  A*D #= G*J,  % 2
-  B+C #= D*E,  % 3
-  B*F #= H*J,  % 4
-  I+H #= G-E,  % 5 */
-
-  Result is *(1,2),
-  write(Result),
 
   nth0(0, Operators, Op1),
   apply_restriction(Op1, C, A, Value1),
@@ -40,18 +39,6 @@ star(Operators, L):-
   apply_restriction(Op9, I, H, Value5), 
   nth0(9, Operators, Op10),
   apply_restriction(Op10, H, J, Value4), 
-
-  % subtract(C, A, Value1),
-  %-(C, A) #= Value1,
-  /* *(A, D) #= Value2,
-  +(B, C) #= Value3,
-  D*E #= Value3,
-  B*F #= Value4,
-  G-E #= Value5,
-  I+F #= Value1,
-  G*J #= Value2,
-  I+H #= Value5,
-  H*J #= Value4, */
 
   % Pesquisa da solução
   labeling([], L),
