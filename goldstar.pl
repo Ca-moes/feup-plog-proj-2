@@ -18,7 +18,7 @@ write_to_file:-
   write('test 1234\n'),
   flush_output(S1),
   close(S1).
-  
+
 star(Operators, L):-
   % Definição das Variáveis e Domínios
   L = [A, B, C, D, E, F, G, H, I, J],
