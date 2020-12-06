@@ -3,7 +3,7 @@
 
 % Prints to the console all of the stars that are possible to be made
 print_all_comb:-
-  star(ResultList, L), fail.
+  star(L), fail.
 
 save_all_comb:-
   open('test.txt', write, S1),
@@ -19,59 +19,69 @@ write_to_file:-
   flush_output(S1),
   close(S1).
 
-star(Operators, L):-
+star(L):-
   % Definição das Variáveis e Domínios
   L = [A, B, C, D, E, F, G, H, I, J],
   domain(L, 0, 9),
+  Ops = [Op1i, Op2i, Op3i, Op4i, Op5i, Op6i, Op7i, Op8i, Op9i, Op10i],
+  domain(Ops, 1, 4),
 
   % Colocação das Restrições
   all_distinct(L),
 
-  nth0(0, Operators, Op1),
+  numb_signal(Op1i, Op1),
   apply_restriction(Op1, C, A, Value1),
-  nth0(1, Operators, Op2),
+  numb_signal(Op2i, Op2),
   apply_restriction(Op2, A, D, Value2),  
-  nth0(2, Operators, Op3),
+  numb_signal(Op3i, Op3),
   apply_restriction(Op3, B, C, Value3), 
-  nth0(3, Operators, Op4),
+  numb_signal(Op4i, Op4),
   apply_restriction(Op4, D, E, Value3), 
-  nth0(4, Operators, Op5),
+  numb_signal(Op5i, Op5),
   apply_restriction(Op5, B, F, Value4), 
-  nth0(5, Operators, Op6),
+  numb_signal(Op6i, Op6),
   apply_restriction(Op6, G, E, Value5), 
-  nth0(6, Operators, Op7),
+  numb_signal(Op7i, Op7),
   apply_restriction(Op7, I, F, Value1), 
-  nth0(7, Operators, Op8),
+  numb_signal(Op8i, Op8),
   apply_restriction(Op8, G, J, Value2), 
-  nth0(8, Operators, Op9),
+  numb_signal(Op9i, Op9),
   apply_restriction(Op9, I, H, Value5), 
-  nth0(9, Operators, Op10),
+  numb_signal(Op10i, Op10),
   apply_restriction(Op10, H, J, Value4), 
 
   % Pesquisa da solução
   labeling([], L),
-  print_option(L, Operators).
+  print_option(L, Ops).
 
-apply_restriction(-, Var1, Var2, Value):-
-  Var1-Var2 #= Value.
+/* apply_restriction(+, Op2, Var1, Var2, Var3, Var4):-
+  Var1+Var2 #= Value,
+  apply_restriction(Op2, Var3, Var3, Value). */
+
 apply_restriction(+, Var1, Var2, Value):-
   Var1+Var2 #= Value.
+apply_restriction(-, Var1, Var2, Value):-
+  Var1-Var2 #= Value.
 apply_restriction(*, Var1, Var2, Value):-
   Var1*Var2 #= Value.
 apply_restriction(/, Var1, Var2, Value):-
   Var1/Var2 #= Value.
+numb_signal(1,+).
+numb_signal(2,-).
+numb_signal(3,*).
+numb_signal(4,/).
 
 print_option(NumberList, OperatorList):-
-  nth0(0, OperatorList, Op0),
-  nth0(1, OperatorList, Op1),
-  nth0(2, OperatorList, Op2),
-  nth0(3, OperatorList, Op3),
-  nth0(4, OperatorList, Op4),
-  nth0(5, OperatorList, Op5),
-  nth0(6, OperatorList, Op6),
-  nth0(7, OperatorList, Op7),
-  nth0(8, OperatorList, Op8),
-  nth0(9, OperatorList, Op9),
+  nth0(0, OperatorList, Op0i), numb_signal(Op0i, Op0),
+  nth0(1, OperatorList, Op1i), numb_signal(Op1i, Op1),
+  nth0(2, OperatorList, Op2i), numb_signal(Op2i, Op2),
+  nth0(3, OperatorList, Op3i), numb_signal(Op3i, Op3),
+  nth0(4, OperatorList, Op4i), numb_signal(Op4i, Op4),
+  nth0(5, OperatorList, Op5i), numb_signal(Op5i, Op5),
+  nth0(6, OperatorList, Op6i), numb_signal(Op6i, Op6),
+  nth0(7, OperatorList, Op7i), numb_signal(Op7i, Op7),
+  nth0(8, OperatorList, Op8i), numb_signal(Op8i, Op8),
+  nth0(9, OperatorList, Op9i), numb_signal(Op9i, Op9),
   format('[~w,~w,~w,~w,~w,~w,~w,~w,~w,~w]\n', [Op0, Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9]),
   write(NumberList), nl, nl.
 print_star(NumberList, OperatorList):-
