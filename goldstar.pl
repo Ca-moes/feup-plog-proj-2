@@ -8,10 +8,18 @@ save_all_comb:-
   ((print_all_comb) ; nl),
   close(S1).
 
+save_1_solution:-
+  open('test.txt', write, S1),
+  set_output(S1),
+  ((print_1_solution) ; nl),
+  close(S1).
 
 % Prints to the console all of the stars that are possible to be made
 print_all_comb:-
   star(L), fail.
+
+print_1_solution:-
+  star(L, Ops), Ops == [4,4,4,4,4,4,4,4,4,4].
 
 save_all_comb:-
   open('test.txt', write, S1),
@@ -37,7 +45,7 @@ Isto para confirmar que o método que soluciona funciona
 /* generate_operators(L):-
  */
 
-star(L):-
+star(L, Ops):-
   % Definição das Variáveis e Domínios
   L = [A, B, C, D, E, F, G, H, I, J],
   domain(L, 0, 9),
