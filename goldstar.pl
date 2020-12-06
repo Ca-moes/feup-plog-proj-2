@@ -4,15 +4,27 @@
 
 save_all_comb:-
   open('test.txt', write, S1),
+  current_output(Console),
   set_output(S1),
+  statistics(runtime, [T0|_]),
   ((print_all_comb) ; nl),
-  close(S1).
+  statistics(runtime, [T1|_]),
+  T is T1 - T0,
+  close(S1),
+  set_output(Console),
+  format('print_all_comb/0 took ~3d sec.~n', [T]).
 
 save_1_solution:-
   open('test.txt', write, S1),
+  current_output(Console),
   set_output(S1),
+  statistics(runtime, [T0|_]),
   ((print_1_solution) ; nl),
-  close(S1).
+  statistics(runtime, [T1|_]),
+  T is T1 - T0,
+  close(S1),
+  set_output(Console),
+  format('print_1_solution/0 took ~3d sec.~n', [T]).
 
 % Prints to the console all of the stars that are possible to be made
 print_all_comb:-
