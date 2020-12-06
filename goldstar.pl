@@ -29,34 +29,19 @@ star(L):-
   % Colocação das Restrições
   all_distinct(L),
 
-  numb_signal(Op1i, Op1),
-  apply_restriction(Op1, C, A, Value1),
-  numb_signal(Op2i, Op2),
-  apply_restriction(Op2, A, D, Value2),  
-  numb_signal(Op3i, Op3),
-  apply_restriction(Op3, B, C, Value3), 
-  numb_signal(Op4i, Op4),
-  apply_restriction(Op4, D, E, Value3), 
-  numb_signal(Op5i, Op5),
-  apply_restriction(Op5, B, F, Value4), 
-  numb_signal(Op6i, Op6),
-  apply_restriction(Op6, G, E, Value5), 
-  numb_signal(Op7i, Op7),
-  apply_restriction(Op7, I, F, Value1), 
-  numb_signal(Op8i, Op8),
-  apply_restriction(Op8, G, J, Value2), 
-  numb_signal(Op9i, Op9),
-  apply_restriction(Op9, I, H, Value5), 
-  numb_signal(Op10i, Op10),
-  apply_restriction(Op10, H, J, Value4), 
+  apply_restriction(Op1, C, A, Op7, I, F),
+  apply_restriction(Op2, A, D, Op8, G, J),
+  apply_restriction(Op3, B, C, Op4, D, E),
+  apply_restriction(Op5, B, F, Op10, H, J),
+  apply_restriction(Op6, G, E, Op9, I, H),
 
   % Pesquisa da solução
   labeling([], L),
   print_option(L, Ops).
 
-/* apply_restriction(+, Op2, Var1, Var2, Var3, Var4):-
-  Var1+Var2 #= Value,
-  apply_restriction(Op2, Var3, Var3, Value). */
+apply_restriction(Op1, Var1, Var2, Op2, Var3, Var4):-
+  apply_restriction(Op1, Var1, Var2, Value),
+  apply_restriction(Op2, Var3, Var4, Value).
 
 apply_restriction(+, Var1, Var2, Value):-
   Var1+Var2 #= Value.
@@ -66,6 +51,7 @@ apply_restriction(*, Var1, Var2, Value):-
   Var1*Var2 #= Value.
 apply_restriction(/, Var1, Var2, Value):-
   Var1/Var2 #= Value.
+
 numb_signal(1,+).
 numb_signal(2,-).
 numb_signal(3,*).
@@ -153,5 +139,27 @@ print_star(NumberList, OperatorList):-
 10 posições possiveis para sinais
 4 sinais : + - * /
 10^4 = 1.048.576 Combinações possiveis de estrelas.
+
+
+numb_signal(Op1i, Op1),
+  apply_restriction(Op1, C, A, Value1),
+  numb_signal(Op2i, Op2),
+  apply_restriction(Op2, A, D, Value2),  
+  numb_signal(Op3i, Op3),
+  apply_restriction(Op3, B, C, Value3), 
+  numb_signal(Op4i, Op4),
+  apply_restriction(Op4, D, E, Value3), 
+  numb_signal(Op5i, Op5),
+  apply_restriction(Op5, B, F, Value4), 
+  numb_signal(Op6i, Op6),
+  apply_restriction(Op6, G, E, Value5), 
+  numb_signal(Op7i, Op7),
+  apply_restriction(Op7, I, F, Value1), 
+  numb_signal(Op8i, Op8),
+  apply_restriction(Op8, G, J, Value2), 
+  numb_signal(Op9i, Op9),
+  apply_restriction(Op9, I, H, Value5), 
+  numb_signal(Op10i, Op10),
+  apply_restriction(Op10, H, J, Value4), 
 
 */
