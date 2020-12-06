@@ -1,6 +1,14 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 
+
+save_all_comb:-
+  open('test.txt', write, S1),
+  set_output(S1),
+  ((print_all_comb) ; nl),
+  close(S1).
+
+
 % Prints to the console all of the stars that are possible to be made
 print_all_comb:-
   star(L), fail.
@@ -18,6 +26,16 @@ write_to_file:-
   write('test 1234\n'),
   flush_output(S1),
   close(S1).
+
+/*
+Pelo que o DCS disse é para criar uma lista de operadores 
+aleatória e pôr dentro do star/1 para ele resolver, se não tiver resolução 
+cria outra e resolve até uma lista de ops tiver solução
+
+Isto para confirmar que o método que soluciona funciona
+*/
+/* generate_operators(L):-
+ */
 
 star(L):-
   % Definição das Variáveis e Domínios
@@ -42,7 +60,6 @@ star(L):-
 apply_restriction(Op1, Var1, Var2, Op2, Var3, Var4):-
   apply_restriction(Op1, Var1, Var2, Value),
   apply_restriction(Op2, Var3, Var4, Value).
-
 apply_restriction(+, Var1, Var2, Value):-
   Var1+Var2 #= Value.
 apply_restriction(-, Var1, Var2, Value):-
