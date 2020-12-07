@@ -73,6 +73,8 @@ star(L, Ops):-
   apply_restriction(Op5, B, F, Op10, H, J),
   apply_restriction(Op6, G, E, Op9, I, H),
 
+  bigger(Op1i, Ops),
+  
   % Pesquisa da solução
   labeling([], L),
   print_option(L, Ops).
@@ -88,6 +90,11 @@ apply_restriction(*, Var1, Var2, Value):-
   Var1*Var2 #= Value.
 apply_restriction(/, Var1, Var2, Value):-
   Var1/Var2 #= Value.
+
+bigger(Op1, []).
+bigger(Op1, [Op | Rest]) :-
+    Op1 #>= Op,
+    bigger(Op1, Rest).
 
 numb_signal(1,+).
 numb_signal(2,-).
