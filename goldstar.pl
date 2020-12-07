@@ -1,30 +1,25 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 
-
-save_all_comb:-
+% Necessário mudar working directory para pasta de projeto no SicStus 
+% prolog:set_current_directory('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2').
+/*
+save(operators)
+save(print_all_comb)
+save(save_1_solution)
+*/
+save(Predicate):-
   open('test.txt', write, S1),
   current_output(Console),
   set_output(S1),
   statistics(runtime, [T0|_]),
-  ((print_all_comb) ; nl),
+  ((Predicate, fail) ; true),
   statistics(runtime, [T1|_]),
   T is T1 - T0,
   close(S1),
   set_output(Console),
-  format('print_all_comb/0 took ~3d sec.~n', [T]).
+  format('~w took ~3d sec.~n', [Predicate, T]).
 
-save_1_solution:-
-  open('test.txt', write, S1),
-  current_output(Console),
-  set_output(S1),
-  statistics(runtime, [T0|_]),
-  ((print_1_solution) ; nl),
-  statistics(runtime, [T1|_]),
-  T is T1 - T0,
-  close(S1),
-  set_output(Console),
-  format('print_1_solution/0 took ~3d sec.~n', [T]).
 
 % Prints to the console all of the stars that are possible to be made
 print_all_comb:-
@@ -33,19 +28,6 @@ print_all_comb:-
 print_1_solution:-
   star(L, Ops), Ops == [4,4,4,4,4,4,4,4,4,4].
 
-save_all_comb:-
-  open('test.txt', write, S1),
-  set_output(S1),
-  print_all_comb.
-
-
-% Necessário mudar working directory para pasta de projeto no SicStus 
-write_to_file:-
-  open('test.txt', write, S1),
-  set_output(S1),
-  write('test 1234\n'),
-  flush_output(S1),
-  close(S1).
 
 /*
 Pelo que o DCS disse é para criar uma lista de operadores 
@@ -57,29 +39,59 @@ Isto para confirmar que o método que soluciona funciona
 /* generate_operators(L):-
  */
 
-star(L, Ops):-
+test:-
+  % spy operators,
+  operators(Ops),
+  star(Ops, L), fail,
+  write(L).
+
+/*
+Encontra uma das 1.04m de possiveis combinações de operadores
+*/
+operators(Ops):-
+  % Definição das Variáveis e Domínios
+  length(Ops, 10),
+  domain(Ops, 1, 4),
+
+  % Colocação das Restrições
+  element(1, Ops, Op1i),
+  bigger(Op1i, Ops),
+
+  % Pesquisa da solução
+  labeling([], Ops).
+
+star(Ops, L):-
   % Definição das Variáveis e Domínios
   L = [A, B, C, D, E, F, G, H, I, J],
   domain(L, 0, 9),
-  Ops = [Op1i, Op2i, Op3i, Op4i, Op5i, Op6i, Op7i, Op8i, Op9i, Op10i],
-  domain(Ops, 1, 4),
 
   % Colocação das Restrições
   all_distinct(L),
 
-  apply_restriction(Op1, C, A, Op7, I, F),
-  apply_restriction(Op2, A, D, Op8, G, J),
-  apply_restriction(Op3, B, C, Op4, D, E),
-  apply_restriction(Op5, B, F, Op10, H, J),
-  apply_restriction(Op6, G, E, Op9, I, H),
+  nth0(0, Ops, Op0i),
+  nth0(1, Ops, Op1i),
+  nth0(2, Ops, Op2i),
+  nth0(3, Ops, Op3i),
+  nth0(4, Ops, Op4i),
+  nth0(5, Ops, Op5i),
+  nth0(6, Ops, Op6i),
+  nth0(7, Ops, Op7i),
+  nth0(8, Ops, Op8i),
+  nth0(9, Ops, Op9i),
 
-  bigger(Op1i, Ops),
+  apply_restriction(Op0i, C, A, Op7i, I, F),
+  apply_restriction(Op1i, A, D, Op4i, G, J),
+  apply_restriction(Op9i, B, C, Op2i, D, E),
+  apply_restriction(Op8i, B, F, Op5i, H, J),
+  apply_restriction(Op3i, G, E, Op6i, I, H),
   
   % Pesquisa da solução
   labeling([], L),
-  print_option(L, Ops).
+  print_option(L, Ops), !.
 
-apply_restriction(Op1, Var1, Var2, Op2, Var3, Var4):-
+apply_restriction(Op1i, Var1, Var2, Op2i, Var3, Var4):-
+  numb_signal(Op1i, Op1),
+  numb_signal(Op2i, Op2),
   apply_restriction(Op1, Var1, Var2, Value),
   apply_restriction(Op2, Var3, Var4, Value).
 apply_restriction(+, Var1, Var2, Value):-
@@ -113,7 +125,7 @@ print_option(NumberList, OperatorList):-
   nth0(8, OperatorList, Op8i), numb_signal(Op8i, Op8),
   nth0(9, OperatorList, Op9i), numb_signal(Op9i, Op9),
   format('[~w,~w,~w,~w,~w,~w,~w,~w,~w,~w]\n', [Op0, Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9]),
-  write(NumberList), nl, nl.
+  write(NumberList), nl.
 print_star(NumberList, OperatorList):-
   nth0(0, NumberList, A),
   nth0(1, NumberList, B),
@@ -207,3 +219,10 @@ numb_signal(Op1i, Op1),
   apply_restriction(Op10, H, J, Value4), 
 
 */
+
+write_to_file:-
+  open('test.txt', write, S1),
+  set_output(S1),
+  write('test 1234\n'),
+  flush_output(S1),
+  close(S1).
