@@ -3,7 +3,7 @@
 
 % Prints to the console all of the stars that are possible to be made
 print_all_comb:-
-  star(ResultList, L), fail.
+  star(_, _), fail.
 
 save_all_comb:-
   open('test.txt', write, S1),
@@ -52,10 +52,10 @@ star(Operators, L):-
   labeling([], L),
   print_option(L, Operators).
 
-apply_restriction(-, Var1, Var2, Value):-
-  Var1-Var2 #= Value.
 apply_restriction(+, Var1, Var2, Value):-
   Var1+Var2 #= Value.
+apply_restriction(-, Var1, Var2, Value):-
+  Var1-Var2 #= Value.
 apply_restriction(*, Var1, Var2, Value):-
   Var1*Var2 #= Value.
 apply_restriction(/, Var1, Var2, Value):-
@@ -72,8 +72,8 @@ print_option(NumberList, OperatorList):-
   nth0(7, OperatorList, Op7),
   nth0(8, OperatorList, Op8),
   nth0(9, OperatorList, Op9),
-  format('[~w,~w,~w,~w,~w,~w,~w,~w,~w,~w]\n', [Op0, Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9]),
-  write(NumberList), nl, nl.
+  format('[~w,~w,~w,~w,~w,~w,~w,~w,~w,~w]', [Op0, Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9]),
+  write(NumberList), nl.
 print_star(NumberList, OperatorList):-
   nth0(0, NumberList, A),
   nth0(1, NumberList, B),
