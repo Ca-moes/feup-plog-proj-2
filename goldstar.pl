@@ -13,42 +13,62 @@ save(Predicate):-
   current_output(Console),
   set_output(S1),
   statistics(runtime, [T0|_]),
-  ((Predicate, fail) ; true),
+  (Predicate ; true),
   statistics(runtime, [T1|_]),
   T is T1 - T0,
+  format('~w took ~3d sec.~n', [Predicate, T]),
   close(S1),
   set_output(Console),
   format('~w took ~3d sec.~n', [Predicate, T]).
 
+write_to_file:-
+  open('test.txt', write, S1),
+  set_output(S1),
+  write('test 1234\n'),
+  flush_output(S1),
+  close(S1).
 
-% Prints to the console all of the stars that are possible to be made
+% Usado sem cut em star, encontra todas as soluções para todas as disposições
+% calcula operadores dentro de star
 print_all_comb:-
-  star(L), fail.
-
-print_1_solution:-
-  star(L, Ops), Ops == [4,4,4,4,4,4,4,4,4,4].
+  star(_,_), fail.
 
 
 /*
-Pelo que o DCS disse é para criar uma lista de operadores 
-aleatória e pôr dentro do star/1 para ele resolver, se não tiver resolução 
-cria outra e resolve até uma lista de ops tiver solução
+Sem Cut em Star:
+  - Aplica restrições ás combinações de operadores e imprime todas as soluções 
+  para todas as disposições
 
-Isto para confirmar que o método que soluciona funciona
+Com Cut em Star:
+  - Arranja uma solução para cada disposição com restrições
 */
-/* generate_operators(L):-
- */
+print_restricted:-
+  operators_rest(Opsi),
+  opsi_to_opss(Opsi, Ops),
+  star(Ops, L), fail.
 
-test:-
-  % spy operators,
-  operators(Ops),
+/*
+Sem Cut em Star:
+  - Arranja todas as soluções para todas as disposições sem restrições
+
+Com Cut em Star:
+  - Arranja uma solução para cada disposição sem restrições, 1.04m de resultados
+*/
+print_unrestricted:-
+  operators(Opsi),
+  opsi_to_opss(Opsi, Ops),
   star(Ops, L), fail,
   write(L).
+
+opsi_to_opss([],[]).
+opsi_to_opss([H|T], [Sig|Temp]):-
+  numb_signal(H, Sig),
+  opsi_to_opss(T, Temp).
 
 /*
 Encontra uma das 1.04m de possiveis combinações de operadores
 */
-operators(Ops):-
+operators_rest(Ops):-
   % Definição das Variáveis e Domínios
   length(Ops, 10),
   domain(Ops, 1, 4),
@@ -56,6 +76,16 @@ operators(Ops):-
   % Colocação das Restrições
   element(1, Ops, Op1i),
   bigger(Op1i, Ops),
+
+  % Pesquisa da solução
+  labeling([], Ops).
+
+operators(Ops):-
+  % Definição das Variáveis e Domínios
+  length(Ops, 10),
+  domain(Ops, 1, 4),
+
+  % Sem Colocação das Restrições
 
   % Pesquisa da solução
   labeling([], Ops).
@@ -87,11 +117,9 @@ star(Ops, L):-
   
   % Pesquisa da solução
   labeling([], L),
-  print_option(L, Ops), !.
+  print_option_opss(L, Ops), !.
 
-apply_restriction(Op1i, Var1, Var2, Op2i, Var3, Var4):-
-  numb_signal(Op1i, Op1),
-  numb_signal(Op2i, Op2),
+apply_restriction(Op1, Var1, Var2, Op2, Var3, Var4):-
   apply_restriction(Op1, Var1, Var2, Value),
   apply_restriction(Op2, Var3, Var4, Value).
 apply_restriction(+, Var1, Var2, Value):-
@@ -103,7 +131,7 @@ apply_restriction(*, Var1, Var2, Value):-
 apply_restriction(/, Var1, Var2, Value):-
   Var1/Var2 #= Value.
 
-bigger(Op1, []).
+bigger(_, []).
 bigger(Op1, [Op | Rest]) :-
     Op1 #>= Op,
     bigger(Op1, Rest).
@@ -113,7 +141,20 @@ numb_signal(2,-).
 numb_signal(3,*).
 numb_signal(4,/).
 
-print_option(NumberList, OperatorList):-
+print_option_opss(NumberList, OperatorList):-
+  nth0(0, OperatorList, Op0),
+  nth0(1, OperatorList, Op1),
+  nth0(2, OperatorList, Op2),
+  nth0(3, OperatorList, Op3),
+  nth0(4, OperatorList, Op4),
+  nth0(5, OperatorList, Op5),
+  nth0(6, OperatorList, Op6),
+  nth0(7, OperatorList, Op7),
+  nth0(8, OperatorList, Op8),
+  nth0(9, OperatorList, Op9),
+  format('[~w,~w,~w,~w,~w,~w,~w,~w,~w,~w]', [Op0, Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9]),
+  write(NumberList), nl.
+print_option_opsi(NumberList, OperatorList):-
   nth0(0, OperatorList, Op0i), numb_signal(Op0i, Op0),
   nth0(1, OperatorList, Op1i), numb_signal(Op1i, Op1),
   nth0(2, OperatorList, Op2i), numb_signal(Op2i, Op2),
@@ -124,8 +165,10 @@ print_option(NumberList, OperatorList):-
   nth0(7, OperatorList, Op7i), numb_signal(Op7i, Op7),
   nth0(8, OperatorList, Op8i), numb_signal(Op8i, Op8),
   nth0(9, OperatorList, Op9i), numb_signal(Op9i, Op9),
-  format('[~w,~w,~w,~w,~w,~w,~w,~w,~w,~w]\n', [Op0, Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9]),
+  format('[~w,~w,~w,~w,~w,~w,~w,~w,~w,~w]', [Op0, Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9]),
   write(NumberList), nl.
+
+%% DESATUALIZADO, operadores em lugares diferentes
 print_star(NumberList, OperatorList):-
   nth0(0, NumberList, A),
   nth0(1, NumberList, B),
