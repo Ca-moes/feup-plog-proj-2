@@ -1,15 +1,22 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 
-% Necessário mudar working directory para pasta de projeto no SicStus 
-% prolog:set_current_directory('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2').
+/*
+Necessário mudar working directory para pasta de projeto no SicStus 
+prolog:set_current_directory('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2'), consult('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2/goldstar.pl').
+*/
+
+save_all:-
+  true.
+
 /*
 save(operators)
 save(print_all_comb)
 save(save_1_solution)
 */
 save(Predicate):-
-  open('test.txt', write, S1),
+  get_file_name(Predicate, FileName),
+  open(FileName, write, S1),
   current_output(Console),
   set_output(S1),
   statistics(runtime, [T0|_]),
@@ -21,44 +28,44 @@ save(Predicate):-
   set_output(Console),
   format('~w took ~3d sec.~n', [Predicate, T]).
 
+get_file_name(Predicate, FileName):-
+  Predicate =.. L,
+  nth0(0, L, Name),
+  atom_concat(Name, '.txt', FileName).
+
 write_to_file:-
   open('test.txt', write, S1),
   set_output(S1),
   write('test 1234\n'),
-  flush_output(S1),
   close(S1).
 
 % Usado sem cut em star, encontra todas as soluções para todas as disposições
 % calcula operadores dentro de star
 print_all_comb:-
-  star(_,_), fail.
-
+  star(Ops,_), fail.
 
 /*
 Sem Cut em Star:
   - Aplica restrições ás combinações de operadores e imprime todas as soluções 
   para todas as disposições
-
 Com Cut em Star:
   - Arranja uma solução para cada disposição com restrições
 */
 print_restricted:-
   operators_rest(Opsi),
   opsi_to_opss(Opsi, Ops),
-  star(Ops, L), fail.
+  star(Ops, _), fail.
 
 /*
 Sem Cut em Star:
   - Arranja todas as soluções para todas as disposições sem restrições
-
 Com Cut em Star:
   - Arranja uma solução para cada disposição sem restrições, 1.04m de resultados
 */
 print_unrestricted:-
   operators(Opsi),
   opsi_to_opss(Opsi, Ops),
-  star(Ops, L), fail,
-  write(L).
+  star(Ops, L), fail.
 
 opsi_to_opss([],[]).
 opsi_to_opss([H|T], [Sig|Temp]):-
@@ -117,7 +124,7 @@ star(Ops, L):-
   
   % Pesquisa da solução
   labeling([], L),
-  print_option_opss(L, Ops), !.
+  print_option_opss(L, Ops).
 
 apply_restriction(Op1, Var1, Var2, Op2, Var3, Var4):-
   apply_restriction(Op1, Var1, Var2, Value),
