@@ -1,71 +1,7 @@
+:- consult('results.pl').
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 
-/*
-Necessário mudar working directory para pasta de projeto no SicStus 
-prolog:set_current_directory('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2'), consult('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2/goldstar.pl').
-*/
-
-save_all:-
-  true.
-
-/*
-save(operators)
-save(print_all_comb)
-save(save_1_solution)
-*/
-save(Predicate):-
-  get_file_name(Predicate, FileName),
-  open(FileName, write, S1),
-  current_output(Console),
-  set_output(S1),
-  statistics(runtime, [T0|_]),
-  (Predicate ; true),
-  statistics(runtime, [T1|_]),
-  T is T1 - T0,
-  format('~w took ~3d sec.~n', [Predicate, T]),
-  close(S1),
-  set_output(Console),
-  format('~w took ~3d sec.~n', [Predicate, T]).
-
-get_file_name(Predicate, FileName):-
-  Predicate =.. L,
-  nth0(0, L, Name),
-  atom_concat(Name, '.txt', FileName).
-
-write_to_file:-
-  open('test.txt', write, S1),
-  set_output(S1),
-  write('test 1234\n'),
-  close(S1).
-
-% Usado sem cut em star, encontra todas as soluções para todas as disposições
-% calcula operadores dentro de star
-print_all_comb:-
-  star(Ops,_), fail.
-
-/*
-Sem Cut em Star:
-  - Aplica restrições ás combinações de operadores e imprime todas as soluções 
-  para todas as disposições
-Com Cut em Star:
-  - Arranja uma solução para cada disposição com restrições
-*/
-print_restricted:-
-  operators_rest(Opsi),
-  opsi_to_opss(Opsi, Ops),
-  star(Ops, _), fail.
-
-/*
-Sem Cut em Star:
-  - Arranja todas as soluções para todas as disposições sem restrições
-Com Cut em Star:
-  - Arranja uma solução para cada disposição sem restrições, 1.04m de resultados
-*/
-print_unrestricted:-
-  operators(Opsi),
-  opsi_to_opss(Opsi, Ops),
-  star(Ops, L), fail.
 
 opsi_to_opss([],[]).
 opsi_to_opss([H|T], [Sig|Temp]):-
@@ -97,7 +33,7 @@ operators(Ops):-
   % Pesquisa da solução
   labeling([], Ops).
 
-star(Ops, L):-
+star(Cut, Ops, L):-
   % Definição das Variáveis e Domínios
   L = [A, B, C, D, E, F, G, H, I, J],
   domain(L, 0, 9),
@@ -124,7 +60,8 @@ star(Ops, L):-
   
   % Pesquisa da solução
   labeling([], L),
-  print_option_opss(L, Ops).
+  print_option_opss(L, Ops),
+  ((Cut == 1, !);(Cut == 0)).
 
 apply_restriction(Op1, Var1, Var2, Op2, Var3, Var4):-
   apply_restriction(Op1, Var1, Var2, Value),
@@ -161,6 +98,7 @@ print_option_opss(NumberList, OperatorList):-
   nth0(9, OperatorList, Op9),
   format('[~w,~w,~w,~w,~w,~w,~w,~w,~w,~w]', [Op0, Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9]),
   write(NumberList), nl.
+% Não está a ser usado, em vez de ser passada lista de ops é passada lista de inteiros a representar ops
 print_option_opsi(NumberList, OperatorList):-
   nth0(0, OperatorList, Op0i), numb_signal(Op0i, Op0),
   nth0(1, OperatorList, Op1i), numb_signal(Op1i, Op1),
@@ -175,7 +113,6 @@ print_option_opsi(NumberList, OperatorList):-
   format('[~w,~w,~w,~w,~w,~w,~w,~w,~w,~w]', [Op0, Op1, Op2, Op3, Op4, Op5, Op6, Op7, Op8, Op9]),
   write(NumberList), nl.
 
-%% DESATUALIZADO, operadores em lugares diferentes
 print_star(NumberList, OperatorList):-
   nth0(0, NumberList, A),
   nth0(1, NumberList, B),
@@ -203,16 +140,16 @@ print_star(NumberList, OperatorList):-
   format('                ~w     ~w                       ', [Op0, Op1]), nl,
   write('                                                 '), nl, 
   write('                                                 '), nl,
-  format('~d      ~w      ~d    =    ~d      ~w       ~d  ', [B,Op2,C,D,Op3,E]), nl,
+  format('~d      ~w      ~d    =    ~d      ~w       ~d  ', [B,Op9,C,D,Op2,E]), nl,
   write('                                                 '), nl, 
-  format('    ~w       =              =       ~w          ', [Op4, Op5]), nl,
+  format('    ~w       =              =       ~w          ', [Op8, Op3]), nl,
   write('                                                 '), nl, 
   format('         ~d                   ~d                ', [F,G]), nl,
   write('             =          =                        '), nl, 
   write('                                                 '), nl, 
-  format('      ~w            ~d            ~w            ', [Op6,H,Op7]), nl,
+  format('      ~w            ~d            ~w            ', [Op7,H,Op4]), nl,
   write('                                                 '), nl, 
-  format('           ~w              ~w                   ',[Op8, Op9]), nl,
+  format('           ~w              ~w                   ', [Op6, Op5]), nl,
   write('                                                 '), nl, 
   format('   ~d                               ~d          ', [I,J]), nl,
   write('                                                 ').
