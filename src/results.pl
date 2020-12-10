@@ -77,4 +77,4 @@ Sem Cut em Star:
 print_unrestricted_all_sol:-
   operators(Opsi),
   opsi_to_opss(Opsi, Ops),
-  star(1, Ops, _), fail.
+  star(0, Ops, _), fail.
