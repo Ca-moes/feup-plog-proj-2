@@ -2,6 +2,10 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 
+test:-
+  opsi_to_opss([1,1,1,4,4,4,4,4,2,1], Ops),
+  star(0, Ops, L),
+  fail.
 
 opsi_to_opss([],[]).
 opsi_to_opss([H|T], [Sig|Temp]):-
@@ -15,11 +19,9 @@ operators_rest(Ops):-
   % Definição das Variáveis e Domínios
   length(Ops, 10),
   domain(Ops, 1, 4),
-
   % Colocação das Restrições
   element(1, Ops, Op1i),
   bigger(Op1i, Ops),
-
   % Pesquisa da solução
   labeling([], Ops).
 
@@ -27,9 +29,7 @@ operators(Ops):-
   % Definição das Variáveis e Domínios
   length(Ops, 10),
   domain(Ops, 1, 4),
-
   % Sem Colocação das Restrições
-
   % Pesquisa da solução
   labeling([], Ops).
 
@@ -73,7 +73,8 @@ apply_restriction(-, Var1, Var2, Value):-
 apply_restriction(*, Var1, Var2, Value):-
   Var1*Var2 #= Value.
 apply_restriction(/, Var1, Var2, Value):-
-  Var1/Var2 #= Value.
+  % Var1/Var2 #= Value
+  Var1 #= Value * Var2.
 
 bigger(_, []).
 bigger(Op1, [Op | Rest]) :-
