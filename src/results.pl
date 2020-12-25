@@ -4,7 +4,7 @@ prolog:set_current_directory('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-
 */
 save_all:-
     save_groups(3,6),       % Lower Bound e Upper Bound
-    save_find_sol(3,9,5),   % Lower Bound, Upper Bound, número de tentativas
+    save_find_sol(3,18,5),   % Lower Bound, Upper Bound, número de tentativas
     write('\nAll Finished\n').
 
 % chama save_group com nº de pontas entre arg1 e arg2 -> [arg1, arg2]
