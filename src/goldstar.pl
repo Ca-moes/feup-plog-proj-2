@@ -1,13 +1,18 @@
 :- consult('results.pl').
+:- consult('menus.pl').
+:- consult('test_cases.pl').
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 :- use_module(library(random)).
 
-test(Tips):-
-    repeat,
-    operators(2, Tips, OpsInt),
-    opsi_to_opss(OpsInt, Ops),
-    gold_star(1, Ops).
+test:-
+    read_line(Codes),
+    code_to_numb(Codes, Numbs),
+    merge(Numbs, Numb),
+    write(Numb).
+
+
+
 
 % operators(+Restricted, +Tips, -Operators)
 operators(1, Tips, Ops):-
@@ -31,17 +36,19 @@ operators(0, Tips, Ops):-
     % Pesquisa da solução
     labeling([], Ops).
 % gerar operadores aleatórios
-operators(2, Tips, Ops):-
+operators(2, Tips, [R|OpsPart]):-
     Tips >= 3,
-    OperNUmb is Tips*2,
-    create_list(OperNUmb, Ops).
+    OperNUmb is Tips*2-1,
+    random(2, 5, R), % restrição bigger
+    UpperB is R+1,
+    create_list(OperNUmb, UpperB, OpsPart).
     
-create_list(0, []).
-create_list(Size, [Result|TempReturn]):-
+create_list(0, _, []).
+create_list(Size, UpperB, [Result|TempReturn]):-
     Size > 0,
     Size1 is Size-1,
-    random(1,5, Result),
-    create_list(Size1, TempReturn).
+    random(1,UpperB, Result),
+    create_list(Size1, UpperB, TempReturn).
 
 bigger(_, []).
 bigger(Op1, [Op | Rest]) :-
