@@ -1,12 +1,13 @@
 :- consult('results.pl').
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
+:- use_module(library(random)).
 
 test(Tips):-
-    operators(1, Tips, OpsInt),
+    repeat,
+    operators(2, Tips, OpsInt),
     opsi_to_opss(OpsInt, Ops),
-    gold_star(1, Ops),
-    fail.
+    gold_star(1, Ops).
 
 % operators(+Restricted, +Tips, -Operators)
 operators(1, Tips, Ops):-
@@ -29,6 +30,18 @@ operators(0, Tips, Ops):-
     % Sem Colocação das Restrições
     % Pesquisa da solução
     labeling([], Ops).
+% gerar operadores aleatórios
+operators(2, Tips, Ops):-
+    Tips >= 3,
+    OperNUmb is Tips*2,
+    create_list(OperNUmb, Ops).
+    
+create_list(0, []).
+create_list(Size, [Result|TempReturn]):-
+    Size > 0,
+    Size1 is Size-1,
+    random(1,5, Result),
+    create_list(Size1, TempReturn).
 
 bigger(_, []).
 bigger(Op1, [Op | Rest]) :-
@@ -45,7 +58,8 @@ gold_star(Cut, Operators):-
     % Colocação das Restrições
     all_distinct(Result),
     first_restrictions(Operators, Result),
-    remaining_restrictions(Operators, Result),
+    remaining_restrictions(Operators, Result), 
+    !, % in case labelling fails, exits predicate
 
     % Pesquisa da solução
     labeling([], Result),
@@ -85,7 +99,6 @@ first_restrictions(Operators, Operands):-
 remaining_restrictions(Operators, Operands):-
     [_,_|ListRest] = Operands,
     apply_remaining_restrictions(Operators, ListRest, 6, 3).
-
 % Para prevenir adicionar restrições com 3 pontas ou menos
 apply_remaining_restrictions(Operators, _, _, _):-
     length(Operators, Len),

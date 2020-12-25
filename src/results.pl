@@ -8,14 +8,25 @@ save_all:-
     save_group(5),
     write('\nAll Finished\n').
 
-save_group(Tips):-
-    save(Tips, 1, 1),
-    save(Tips, 1, 0),
-    save(Tips, 0, 1),
-    save(Tips, 0, 0).
+save_find_sol:-
+    save(find_1_solution, 3, _, _),
+    save(find_1_solution, 4, _, _),
+    save(find_1_solution, 5, _, _),
+    save(find_1_solution, 6, _, _),
+    save(find_1_solution, 7, _, _),
+    save(find_1_solution, 8, _, _),
+    save(find_1_solution, 9, _, _),
+    save(find_1_solution, 10, _, _),
+    write('\nAll Finished\n').
 
-save(Tips, Rest, Cut):-
-    Predicate =.. [run, Tips, Rest, Cut],
+save_group(Tips):-
+    save(run, Tips, 1, 1),
+    save(run, Tips, 1, 0),
+    save(run, Tips, 0, 1),
+    save(run, Tips, 0, 0).
+
+save(PredicateName, Tips, Rest, Cut):-
+    Predicate =.. [PredicateName, Tips, Rest, Cut],
     file_name(Tips, Rest, Cut, FileName),
     format('Saving to ~w\n', [FileName]),
     open(FileName, write, S1),
@@ -35,6 +46,13 @@ run(Tips, Restricted, Cut):-
     opsi_to_opss(OpsInt, Ops),
     gold_star(Cut, Ops),
     fail.
+
+find_1_solution(Tips, _, _):-
+    repeat,                     % repete para encontrar outra configuração
+    operators(2, Tips, OpsInt), % configuração aleatória
+    opsi_to_opss(OpsInt, Ops),  % converter de números para sinais
+    write(Ops), nl,
+    gold_star(1, Ops).          % soluciona
 
 % file_name(+Tips, +Restricted, +Cut, -Filename)
 file_name(Tips, Restricted, Cut, FileName):-
