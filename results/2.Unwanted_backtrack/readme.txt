@@ -1,0 +1,1 @@
+Caso o labelling falha-se o programa fazia redo de remaining_restrictions em vez de falhar, fazendo com que se perde-se tempo assim que se verificava que a configuração não tem solução. Após verificar isto adicionou-se um ! antes do labeling([], L).
