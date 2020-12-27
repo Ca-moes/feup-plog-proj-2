@@ -1,9 +1,9 @@
 /*
-Necessário mudar working directory para pasta de projeto no SicStus 
+Necessário mudar working directory para pasta de projeto no SicStus
 prolog:set_current_directory('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2'), consult('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2/src/goldstar.pl').
 */
 save_all:-
-    save_find_sol(3,18,5),   % Lower Bound, Upper Bound, número de tentativas
+    save_find_sol(3,13,5),   % Lower Bound, Upper Bound, número de tentativas
     save_groups(3,6),       % Lower Bound e Upper Bound
     write('\nAll Finished\n').
 
@@ -13,7 +13,7 @@ save_groups(Upper, Upper):-
     write('\nSave Groups Finished\n\n').
 save_groups(Current, U):-
     Current1 is Current+1,
-    save_group(Current), 
+    save_group(Current),
     save_groups(Current1, U).
 % guarda, para um número de pontas, os resultados com restrições ou sem restrições, todos os resultados ou apenas 1
 save_group(Tips):-
@@ -42,7 +42,7 @@ call_save(Current, Upper, Serial):-
     Current1 is Current+1,
     save(Current, Serial),
     call_save(Current1, Upper, Serial).
-    
+
 % save de 3 argumentos guarda resutados de run
 save(Tips, Rest, Cut):-
     Predicate =.. [run, Tips, Rest, Cut],
@@ -111,7 +111,7 @@ file_name(Tips, Restricted, Cut, FileName):-
     atom_concat(Temp, ResString, Temp2),
     atom_concat(Temp2, CutString, Temp3),
     atom_concat(Temp3, '.txt', FileName).
-    
+
 restricted_string(1, 'restricted_').
 restricted_string(0, 'unrestricted_').
 cut_string(1, 'one_solution').
