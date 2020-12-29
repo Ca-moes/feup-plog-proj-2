@@ -73,8 +73,8 @@ get_divisions(Operators, Operands, Affected):-
     Op0 == /,
     length(Operands, Length),
     Length1 is Length-1,
-    nth0(0, Operands, A),
-    nth0(Length1, Operands, Z),
+    element(1, Operands, A),
+    element(Length, Operands, Z),
     get_divisions_rest(Length1, Operators, Operands, Return, Return2),
     Affected1 = [A, Z | Return],
     Affected2 = [0, Length1 | Return2],
@@ -88,10 +88,11 @@ get_divisions(Operators, Operands, Affected):-
 get_divisions_rest(0,_,_, [], []).
 get_divisions_rest(Index, Operators, Operands, [A, B | Return1], [Index, Index1|Return2]):-
     Index1 is Index-1,
+    Index2 is Index+1,
     nth0(Index, Operators, Op),
     Op == /,
-    nth0(Index, Operands, A),
-    nth0(Index1, Operands, B),
+    element(Index2, Operands, A),
+    element(Index, Operands, B),
     get_divisions_rest(Index1, Operators, Operands, Return1, Return2).
 get_divisions_rest(Index, Operators, Operands, Return1, Return2):-
     Index1 is Index-1,
@@ -135,25 +136,26 @@ list_without_elem(Elem, [H|T], [H|Result]):-
 
 first_restrictions(Operators, Operands):-
     length(Operators, Length),
-    Last_1 is Length-1, 
-    Last_2 is Length-2, 
-    Last_3 is Length-3, 
-    Last_4 is Length-4, 
-    nth0(0, Operands, A),
-    nth0(1, Operands, B),
-    nth0(2, Operands, C),
-    nth0(3, Operands, D),
-    nth0(4, Operands, E),
-    nth0(Last_1, Operands, LetterL1),
-    nth0(Last_2, Operands, LetterL2),
-    nth0(Last_3, Operands, LetterL3),
-    nth0(Last_4, Operands, LetterL4),
+    Last_1 is Length,
+    Last_2 is Length-1, % Last_1 nth0
+    Last_3 is Length-2,
+    Last_4 is Length-3, % Last_3 nth0
+
+    element(1, Operands, A),
+    element(2, Operands, B),
+    element(3, Operands, C),
+    element(4, Operands, D),
+    element(5, Operands, E),
+    element(Last_1, Operands, LetterL1),
+    element(Last_2, Operands, LetterL2),
+    element(Last_3, Operands, LetterL3),
+    element(Last_4, Operands, LetterL4),
     nth0(0, Operators, Op0i),
     nth0(1, Operators, Op1i),
     nth0(2, Operators, Op2i),
     nth0(4, Operators, Op4i),
-    nth0(Last_1, Operators, OpL1i),
-    nth0(Last_3, Operators, OpL3i),
+    nth0(Last_2, Operators, OpL1i),
+    nth0(Last_4, Operators, OpL3i),
     %% Restrições comuns a todos
     %%% Primeira: A (Op1) B = D (Op4) E
     apply_restriction(Op1i, A, B, Op4i, D, E),
@@ -185,10 +187,10 @@ apply_remaining_restrictions(Operators, Operands, Index1, Index2):-
 
 % predicado para buscar os valores e aplicar a restrição intermédia
 apply_rem_rest_helper(Operators, Operands, Index1, Index2):-
-    nth0(0, Operands, D),
-    nth0(1, Operands, C),
-    nth0(3, Operands, B),
-    nth0(4, Operands, A),
+    element(1, Operands, D),
+    element(2, Operands, C),
+    element(4, Operands, B),
+    element(5, Operands, A),
     nth0(Index1, Operators, Op1),
     nth0(Index2, Operators, Op2),
     apply_restriction(Op1, A, B, Op2, C, D).
