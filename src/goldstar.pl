@@ -5,7 +5,8 @@
 :- use_module(library(random)).
 
 test:-
-    gold_star(1, [+,+,+,+,+,+,+,-]).
+    run(4,1,1).
+
 
 % operators(+Restricted, +Tips, -Operators)
 operators(1, Tips, Ops):-
@@ -66,6 +67,43 @@ gold_star(Cut, Operators):-
     labeling([variable(select_next(Affected)), down], Result),
     print_result(Operators, Result),
     ((Cut == 1, !);(Cut == 0)).
+
+gold_star(Cut, Operators, X, Y, Z):-
+    % Definição das Variáveis e Domínios
+    length(Operators, Length),
+    length(Result, Length),
+    Upper is Length-1,
+    domain(Result, 0, Upper),
+
+    % Colocação das Restrições
+    all_distinct(Result),
+    first_restrictions(Operators, Result),
+    remaining_restrictions(Operators, Result), 
+    !, % in case labelling fails, exits predicate
+
+    % Pesquisa da solução
+    labeling([X, Y, Z], Result),
+    print_result(Operators, Result),
+    ((Cut == 1, !);(Cut == 0)).
+
+gold_star(Cut, Operators, Y, Z):-
+    % Definição das Variáveis e Domínios
+    length(Operators, Length),
+    length(Result, Length),
+    Upper is Length-1,
+    domain(Result, 0, Upper),
+    get_divisions(Operators, Result, Affected),
+
+    % Colocação das Restrições
+    all_distinct(Result),
+    first_restrictions(Operators, Result),
+    remaining_restrictions(Operators, Result), 
+    !, % in case labelling fails, exits predicate
+
+    % Pesquisa da solução
+    labeling([variable(select_next(Affected)), Y, Z], Result),
+    print_result(Operators, Result),
+    ((Cut == 1, !);(Cut == 0)).
     
 
 get_divisions(Operators, Operands, Affected):-
@@ -122,7 +160,7 @@ select_var([], ListOfVars, Var, Rest):-
     \+ number(Var).
 select_var([H|_], ListOfVars, H, Rest):-
     \+ number(H),
-    element(Index, ListOfVars, H),
+    element(_, ListOfVars, H),
     list_without_elem(H, ListOfVars, Rest).
 select_var([_|T], ListOfVars, Result, Rest):-
     select_var(T, ListOfVars, Result, Rest).

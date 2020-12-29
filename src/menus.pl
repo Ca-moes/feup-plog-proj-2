@@ -8,8 +8,9 @@ main_menu:-
     write('2 - Show Solver'), nl,
     write('3 - Find Solution (Random Config)'), nl,
     write('4 - DevOps - Save de Resultados'), nl,
+    write('5 - DevOps - Save Heuristica'), nl,
     write('0 - Exit'), nl,
-    read_number(0, 4, Number),
+    read_number(0, 5, Number),
     menu_option(Number).
 
 menu_option(0):-
@@ -32,6 +33,10 @@ menu_option(3):-
 menu_option(4):-
     write('Nao te esquecas de mudar working directory\n'),
     save_all.
+menu_option(5):-
+    write('Nao te esquecas de mudar working directory\n'),
+    save_heuristics_part_2;
+    save_heuristics.
 
 menu_2(0).
 menu_2(Number):-
