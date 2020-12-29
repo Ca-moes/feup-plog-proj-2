@@ -64,7 +64,7 @@ gold_star(Cut, Operators):-
     !, % in case labelling fails, exits predicate
 
     % Pesquisa da solução
-    labeling([variable(select_next(Affected)), down], Result),
+    labeling([min, middle, up], Result),
     print_result(Operators, Result),
     ((Cut == 1, !);(Cut == 0)).
 

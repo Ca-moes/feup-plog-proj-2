@@ -17,9 +17,9 @@ Necessário mudar working directory para pasta de projeto no SicStus
 prolog:set_current_directory('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2'), consult('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2/src/goldstar.pl').
 */
 save_all:-
-    save_groups(3,5),       % Lower Bound e Upper Bound
-    save_find_sol(3,13,5),   % Lower Bound, Upper Bound, número de tentativas
-    save_groups(6,6),       % Lower Bound e Upper Bound
+    save_groups(3,6),       % Lower Bound e Upper Bound
+    % save_find_sol(3,13,5),   % Lower Bound, Upper Bound, número de tentativas
+    % save_groups(6,6),       % Lower Bound e Upper Bound
     write('\nAll Finished\n').
 
 save_heuristics:-
