@@ -30,8 +30,7 @@ menu_option(3):-
     menu_3(Number),
     main_menu.
 menu_option(4):-
-    write('Não te esqieças de mudar working directory'),
-    
+    write('Nao te esquecas de mudar working directory\n'),
     save_all.
 
 menu_2(0).

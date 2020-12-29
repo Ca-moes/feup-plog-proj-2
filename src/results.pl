@@ -1,10 +1,25 @@
+% test_Case(+Tips, -[Operators])
+test_case(3  ,[-,-,+,+,-,+]).
+test_case(4  ,[-,+,-,-,-,+,-,-]).
+test_case(5  ,[-,+,+,-,+,+,-,-,+,-]).
+test_case(6  ,[-,+,-,-,+,-,+,+,-,-,+,-]).
+test_case(7  ,[-,-,+,-,+,-,-,+,-,+,+,-,+,+]).
+test_case(8  ,[-,-,+,+,+,+,-,+,+,-,+,-,+,-,-,-]).
+test_case(9  ,[*,+,+,-,+,+,+,*,+,*,+,+,*,-,-,+,-,*]).
+test_case(10 ,[-,-,+,+,+,+,+,-,-,-,-,-,+,-,-,+,+,-,+,+]).
+test_case(11 ,[-,-,+,-,-,+,-,+,+,-,+,-,-,+,+,+,-,+,+,+,-,+]).
+test_case(12 ,[-,-,+,+,-,-,+,+,-,-,-,-,+,+,-,+,+,+,+,+,+,-,-,-]).
+test_case(13 ,[-,-,-,-,+,-,-,+,-,-,-,+,-,+,+,-,+,-,+,-,-,+,+,-,-,-]).
+test_case(14, [-,+,-,+,-,-,+,-,+,+,-,+,+,-,+,+,+,-,+,+,-,+,+,-,+,-,+,+]).
+test_case(15, [-,-,+,-,-,+,+,-,+,+,+,-,-,+,-,+,+,-,+,-,-,+,-,-,+,-,-,+,-,+]).
 /*
 Necessário mudar working directory para pasta de projeto no SicStus
 prolog:set_current_directory('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2'), consult('C:/Data/Andre/Work/MIEIC_A3S1/PLOG/feup-plog-proj-2/src/goldstar.pl').
 */
 save_all:-
+    save_groups(3,5),       % Lower Bound e Upper Bound
     save_find_sol(3,13,5),   % Lower Bound, Upper Bound, número de tentativas
-    save_groups(3,6),       % Lower Bound e Upper Bound
+    save_groups(6,6),       % Lower Bound e Upper Bound
     write('\nAll Finished\n').
 
 % chama save_group com nº de pontas entre arg1 e arg2 -> [arg1, arg2]

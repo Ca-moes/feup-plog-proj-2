@@ -1,18 +1,11 @@
 :- consult('results.pl').
 :- consult('menus.pl').
-:- consult('test_cases.pl').
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 :- use_module(library(random)).
 
 test:-
-    read_line(Codes),
-    code_to_numb(Codes, Numbs),
-    merge(Numbs, Numb),
-    write(Numb).
-
-
-
+    gold_star(1, [+,+,+,+,+,+,+,-]).
 
 % operators(+Restricted, +Tips, -Operators)
 operators(1, Tips, Ops):-
@@ -61,6 +54,7 @@ gold_star(Cut, Operators):-
     length(Result, Length),
     Upper is Length-1,
     domain(Result, 0, Upper),
+    get_divisions(Operators, Result, Affected),
 
     % Colocação das Restrições
     all_distinct(Result),
@@ -69,10 +63,75 @@ gold_star(Cut, Operators):-
     !, % in case labelling fails, exits predicate
 
     % Pesquisa da solução
-    labeling([], Result),
+    labeling([variable(select_next(Affected)), down], Result),
     print_result(Operators, Result),
     ((Cut == 1, !);(Cut == 0)).
     
+
+get_divisions(Operators, Operands, Affected):-
+    nth0(0, Operators, Op0),
+    Op0 == /,
+    length(Operands, Length),
+    Length1 is Length-1,
+    nth0(0, Operands, A),
+    nth0(Length1, Operands, Z),
+    get_divisions_rest(Length1, Operators, Operands, Return, Return2),
+    Affected1 = [A, Z | Return],
+    Affected2 = [0, Length1 | Return2],
+    del_dups(Affected2, Affected1, Affected).
+get_divisions(Operators, Operands, Affected):-
+    length(Operands, Length),
+    Length1 is Length-1,
+    get_divisions_rest(Length1, Operators, Operands, Return, Return2),
+    del_dups(Return2, Return, Affected).
+
+get_divisions_rest(0,_,_, [], []).
+get_divisions_rest(Index, Operators, Operands, [A, B | Return1], [Index, Index1|Return2]):-
+    Index1 is Index-1,
+    nth0(Index, Operators, Op),
+    Op == /,
+    nth0(Index, Operands, A),
+    nth0(Index1, Operands, B),
+    get_divisions_rest(Index1, Operators, Operands, Return1, Return2).
+get_divisions_rest(Index, Operators, Operands, Return1, Return2):-
+    Index1 is Index-1,
+    get_divisions_rest(Index1, Operators, Operands, Return1, Return2).
+
+del_dups([],_,[]).
+del_dups(Lista1, ListaMid, Lista2) :-
+    Lista1 = [H|T],
+    ListaMid = [H2|T2],
+    \+member(H,T),
+    append([H2], L2, Lista2),
+    del_dups(T, T2, L2).
+del_dups(Lista1, ListaMid, Lista2) :-
+    Lista1 = [_|T],
+    ListaMid = [_|T2],
+    del_dups(T, T2, Lista2).
+
+
+select_next(Param, ListOfVars, Var, Rest):-
+    %write(ListOfVars), write('  '),
+    %write(Param), nl, 
+    select_var(Param, ListOfVars, Var, Rest), !.
+    %write(Var),  write('  '), write(Rest), nl.
+    
+select_var([], ListOfVars, Var, Rest):-
+    random_select(Var, ListOfVars, Rest),
+    \+ number(Var).
+select_var([H|_], ListOfVars, H, Rest):-
+    \+ number(H),
+    element(Index, ListOfVars, H),
+    list_without_elem(H, ListOfVars, Rest).
+select_var([_|T], ListOfVars, Result, Rest):-
+    select_var(T, ListOfVars, Result, Rest).
+
+list_without_elem(_, [], []).
+list_without_elem(Elem, [H|T], Result):-
+    Elem == H,
+    list_without_elem(Elem, T, Result).
+list_without_elem(Elem, [H|T], [H|Result]):-
+    list_without_elem(Elem, T, Result).
 
 first_restrictions(Operators, Operands):-
     length(Operators, Length),
