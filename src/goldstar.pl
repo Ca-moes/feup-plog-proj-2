@@ -7,7 +7,18 @@
 test:-
     run(4,1,1).
 
-
+% operators(+Restricted, +Tips,+X, +Y, +Z, -Operators)
+operators(1, Tips, X, Y, Z, Ops):-
+    % Definição das Variáveis e Domínios
+    Tips >= 3,
+    OperNumb is Tips*2,
+    length(Ops, OperNumb),
+    domain(Ops, 1, 4),
+    % Colocação das Restrições
+    element(1, Ops, Op1i),
+    bigger(Op1i, Ops), !,
+    % Pesquisa da solução
+    labeling([X, Y, Z], Ops).
 % operators(+Restricted, +Tips, -Operators)
 operators(1, Tips, Ops):-
     % Definição das Variáveis e Domínios
@@ -55,7 +66,7 @@ gold_star(Cut, Operators):-
     length(Result, Length),
     Upper is Length-1,
     domain(Result, 0, Upper),
-    get_divisions(Operators, Result, Affected),
+    %get_divisions(Operators, Result, Affected),
 
     % Colocação das Restrições
     all_distinct(Result),

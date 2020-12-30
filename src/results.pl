@@ -22,11 +22,18 @@ save_all:-
     % save_groups(6,6),       % Lower Bound e Upper Bound
     write('\nAll Finished\n').
 
-save_heuristics:-
+save_heuristics_ops:-
     option_test(X),
     option_test_2(Y),
     option_test_3(Z),
     format('~w ~w ~w\n', [X, Y, Z]),
+    save_ops(6,X,Y,Z),
+    fail.
+
+save_heuristics:-
+    option_test(X),
+    option_test_2(Y),
+    option_test_3(Z),
     save(5,1,1,X,Y,Z),
     fail.
 
@@ -165,6 +172,21 @@ save(Tips, Rest, Cut, Y, Z):-
     close(S1),
     set_output(Console),
     format('~w took ~3d sec.~n', [Predicate, T]).
+save_ops(Tips, X, Y, Z):-
+    Predicate =.. [run_ops, Tips, X, Y, Z],
+    file_name_ops(Tips, X, Y, Z, FileName),
+    format('Saving to ~w\n', [FileName]),
+    open(FileName, write, S1),
+    current_output(Console),
+    set_output(S1),
+    statistics(runtime, [T0|_]),
+    (Predicate ; true),
+    statistics(runtime, [T1|_]),
+    T is T1 - T0,
+    format('~w took ~3d sec.~n', [Predicate, T]),
+    close(S1),
+    set_output(Console),
+    format('~w took ~3d sec.~n', [Predicate, T]).
 
 % buscar todas as configurações para um dado numero de Tips, dependendo de Cut e Restrições nos Operadores
 run(Tips, Restricted, Cut):-
@@ -181,6 +203,11 @@ run(Tips, Restricted, Cut, Y, Z):-
     operators(Restricted, Tips, OpsInt),
     opsi_to_opss(OpsInt, Ops),
     gold_star(Cut, Ops, Y, Z),
+    fail.
+run_ops(Tips, X, Y, Z):-
+    operators(1,Tips,X,Y,Z,Opsi),
+    opsi_to_opss(Opsi, Ops),
+    write(Ops),nl,
     fail.
 
 % Pesquisa configurações até encontrar uma que tenha solução
@@ -233,7 +260,17 @@ file_name(Tips, Restricted, Cut, Y, Z, FileName):-
     atom_concat(Temp7, '_', Temp8),
     atom_concat(Temp8, Z, Temp9),
     atom_concat(Temp9, '.txt', FileName).
-
+% file_name_ops(+Tips, +X, +Y, +Z, -Filename)
+file_name_ops(Tips, X, Y, Z, FileName):-
+    number_chars(Tips, TempVar),
+    atom_chars(TipsString, TempVar),
+    atom_concat(TipsString, '_tips_ops_', Temp4),
+    atom_concat(Temp4, X, Temp5),
+    atom_concat(Temp5, '_', Temp6),
+    atom_concat(Temp6, Y, Temp7),
+    atom_concat(Temp7, '_', Temp8),
+    atom_concat(Temp8, Z, Temp9),
+    atom_concat(Temp9, '.txt', FileName).
 restricted_string(1, 'restricted_').
 restricted_string(0, 'unrestricted_').
 cut_string(1, 'one_solution').
