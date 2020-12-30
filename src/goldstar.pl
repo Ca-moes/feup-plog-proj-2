@@ -30,7 +30,7 @@ operators(1, Tips, Ops):-
     element(1, Ops, Op1i),
     bigger(Op1i, Ops),
     % Pesquisa da solução
-    labeling([], Ops).
+    labeling([occurrence, enum, up], Ops).
 operators(0, Tips, Ops):-
     % Definição das Variáveis e Domínios
     Tips >= 3,
