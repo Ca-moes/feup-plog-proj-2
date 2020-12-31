@@ -1,9 +1,11 @@
+% initial predicate to call the main menu
 start:-
     clear,
     main_menu.
 
+% main menu 
 main_menu:-
-    write('Main Menu'), nl, nl,
+    write('\nMain Menu'), nl, nl,
     write('1 - Input Operators'), nl,
     write('2 - Show Solver'), nl,
     write('3 - Find Solution (Random Config)'), nl,
@@ -14,12 +16,12 @@ main_menu:-
     read_number(0, 6, Number),
     menu_option(Number).
 
+% different main menu options
 menu_option(0):-
     write('bye'),
     halt.
 menu_option(1):-
-    write('Input a list in the format [+,-,*,/]'), nl,
-    write('Nem sei se vale a pena fazer isto..'), nl,
+    write('Exit program and call: goldstar(1,Ops) with Ops beeing a list of size 2*n of Operators of your choice : [+,-,*,/,+,-,*,/]\n'),
     main_menu.
 menu_option(2):-
     write('How many tips?'), nl,
@@ -53,7 +55,11 @@ menu_2(Number):-
 
 menu_3(0).
 menu_3(Number):-
-    find_1_solution(Number).
+    statistics(runtime, [T0|_]),
+    find_1_solution(Number),
+    statistics(runtime, [T1|_]),
+    T is T1 - T0,
+    format('Find one Solution -  ~d tips took ~3d sec.~n', [Number, T]).
 
 /*-----------  Inputs  ------------*/
 
