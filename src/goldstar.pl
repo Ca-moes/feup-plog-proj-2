@@ -4,10 +4,8 @@
 :- use_module(library(lists)).
 :- use_module(library(random)).
 
-test:-
-    run(4,1,1).
-
-% operators(+Restricted, +Tips,+X, +Y, +Z, -Operators)
+% operators(+Restricted, +Tips, +X, +Y, +Z, -Operators)
+% operators predicate to test diferent heuristics combinations
 operators(1, Tips, X, Y, Z, Ops):-
     % Definição das Variáveis e Domínios
     Tips >= 3,
@@ -20,6 +18,7 @@ operators(1, Tips, X, Y, Z, Ops):-
     % Pesquisa da solução
     labeling([X, Y, Z], Ops).
 % operators(+Restricted, +Tips, -Operators)
+% operators predicate to create restricted operator configurations
 operators(1, Tips, Ops):-
     % Definição das Variáveis e Domínios
     Tips >= 3,
@@ -31,6 +30,7 @@ operators(1, Tips, Ops):-
     bigger(Op1i, Ops),
     % Pesquisa da solução
     labeling([occurrence, enum, up], Ops).
+% operators predicate to create unrestricted operator configurations
 operators(0, Tips, Ops):-
     % Definição das Variáveis e Domínios
     Tips >= 3,
@@ -40,7 +40,7 @@ operators(0, Tips, Ops):-
     % Sem Colocação das Restrições
     % Pesquisa da solução
     labeling([], Ops).
-% gerar operadores aleatórios
+% operators predicate to create pseudo random operator configurations
 operators(2, Tips, [R|OpsPart]):-
     Tips >= 3,
     OperNUmb is Tips*2-1,
@@ -48,6 +48,7 @@ operators(2, Tips, [R|OpsPart]):-
     UpperB is R+1,
     create_list(OperNUmb, UpperB, OpsPart).
     
+% helper predicate to create random  list
 create_list(0, _, []).
 create_list(Size, UpperB, [Result|TempReturn]):-
     Size > 0,
@@ -55,68 +56,72 @@ create_list(Size, UpperB, [Result|TempReturn]):-
     random(1,UpperB, Result),
     create_list(Size1, UpperB, TempReturn).
 
+% predicate to impose bigger restriction
 bigger(_, []).
 bigger(Op1, [Op | Rest]) :-
     Op1 #>= Op,
     bigger(Op1, Rest).
 
+% gold_star(+Cut, +Operators)
+% Solver predicate to find a solution given a Operators configuration
 gold_star(Cut, Operators):-
-    % Definição das Variáveis e Domínios
+    % Variable and Domain Definition 
     length(Operators, Length),
     length(Result, Length),
     Upper is Length-1,
     domain(Result, 0, Upper),
-    %get_divisions(Operators, Result, Affected),
+    %get_divisions(Operators, Result, Affected),  <- use with custom variable(Sel)
 
-    % Colocação das Restrições
+    % Restrictions
     all_distinct(Result),
     first_restrictions(Operators, Result),
     remaining_restrictions(Operators, Result), 
     !, % in case labelling fails, exits predicate
 
-    % Pesquisa da solução
+    % Solution Search
     labeling([min, middle, up], Result),
     print_result(Operators, Result),
-    ((Cut == 1, !);(Cut == 0)).
-
+    ((Cut == 1, !);(Cut == 0)). % Cut to find only 1 solution, no Cut to find all solutions for a configuration
+% Solver predicate with extra arguments to test heuristics combinations
 gold_star(Cut, Operators, X, Y, Z):-
-    % Definição das Variáveis e Domínios
+    % Variable and Domain Definition 
     length(Operators, Length),
     length(Result, Length),
     Upper is Length-1,
     domain(Result, 0, Upper),
 
-    % Colocação das Restrições
+    % Restrictions
     all_distinct(Result),
     first_restrictions(Operators, Result),
     remaining_restrictions(Operators, Result), 
     !, % in case labelling fails, exits predicate
 
-    % Pesquisa da solução
+    % Solution Search
     labeling([X, Y, Z], Result),
     print_result(Operators, Result),
-    ((Cut == 1, !);(Cut == 0)).
-
+    ((Cut == 1, !);(Cut == 0)). % Cut to find only 1 solution, no Cut to find all solutions for a configuration
+% Solver predicate with extra arguments to test heuristics combinations using custim variable(Sel)
 gold_star(Cut, Operators, Y, Z):-
-    % Definição das Variáveis e Domínios
+    % Variable and Domain Definition 
     length(Operators, Length),
     length(Result, Length),
     Upper is Length-1,
     domain(Result, 0, Upper),
     get_divisions(Operators, Result, Affected),
 
-    % Colocação das Restrições
+    % Restrictions
     all_distinct(Result),
     first_restrictions(Operators, Result),
     remaining_restrictions(Operators, Result), 
     !, % in case labelling fails, exits predicate
 
-    % Pesquisa da solução
+    % Solution Search
     labeling([variable(select_next(Affected)), Y, Z], Result),
     print_result(Operators, Result),
-    ((Cut == 1, !);(Cut == 0)).
+    ((Cut == 1, !);(Cut == 0)). % Cut to find only 1 solution, no Cut to find all solutions for a configuration
     
-
+% Predicate needed with variable(Sel) to finds Operands affected by divisions
+% predicate in case the first operator is a division
 get_divisions(Operators, Operands, Affected):-
     nth0(0, Operators, Op0),
     Op0 == /,
@@ -128,13 +133,14 @@ get_divisions(Operators, Operands, Affected):-
     Affected1 = [A, Z | Return],
     Affected2 = [0, Length1 | Return2],
     del_dups(Affected2, Affected1, Affected).
+% predicate in case the first operator isn't a division
 get_divisions(Operators, Operands, Affected):-
     length(Operands, Length),
     Length1 is Length-1,
     get_divisions_rest(Length1, Operators, Operands, Return, Return2),
     del_dups(Return2, Return, Affected).
-
-get_divisions_rest(0,_,_, [], []).
+% predicate to return the vars afected by divison ant their indexes
+get_divisions_rest(0,_,_,[],[]).
 get_divisions_rest(Index, Operators, Operands, [A, B | Return1], [Index, Index1|Return2]):-
     Index1 is Index-1,
     Index2 is Index+1,
@@ -146,7 +152,7 @@ get_divisions_rest(Index, Operators, Operands, [A, B | Return1], [Index, Index1|
 get_divisions_rest(Index, Operators, Operands, Return1, Return2):-
     Index1 is Index-1,
     get_divisions_rest(Index1, Operators, Operands, Return1, Return2).
-
+% predicate to delete duplicates from a list, given the index list
 del_dups([],_,[]).
 del_dups(Lista1, ListaMid, Lista2) :-
     Lista1 = [H|T],
@@ -159,13 +165,11 @@ del_dups(Lista1, ListaMid, Lista2) :-
     ListaMid = [_|T2],
     del_dups(T, T2, Lista2).
 
-
+% Predicate Sel to use in variable(Sel)
 select_next(Param, ListOfVars, Var, Rest):-
-    %write(ListOfVars), write('  '),
-    %write(Param), nl, 
     select_var(Param, ListOfVars, Var, Rest), !.
-    %write(Var),  write('  '), write(Rest), nl.
-    
+
+% Predicate to select the next variable
 select_var([], ListOfVars, Var, Rest):-
     random_select(Var, ListOfVars, Rest),
     \+ number(Var).
@@ -176,6 +180,7 @@ select_var([H|_], ListOfVars, H, Rest):-
 select_var([_|T], ListOfVars, Result, Rest):-
     select_var(T, ListOfVars, Result, Rest).
 
+% predicate to get the rest after choosing a variable
 list_without_elem(_, [], []).
 list_without_elem(Elem, [H|T], Result):-
     Elem == H,
@@ -183,6 +188,7 @@ list_without_elem(Elem, [H|T], Result):-
 list_without_elem(Elem, [H|T], [H|Result]):-
     list_without_elem(Elem, T, Result).
 
+% predicate to impose the initials restrictions
 first_restrictions(Operators, Operands):-
     length(Operators, Length),
     Last_1 is Length,
@@ -205,36 +211,35 @@ first_restrictions(Operators, Operands):-
     nth0(4, Operators, Op4i),
     nth0(Last_2, Operators, OpL1i),
     nth0(Last_4, Operators, OpL3i),
-    %% Restrições comuns a todos
-    %%% Primeira: A (Op1) B = D (Op4) E
+    %% Restrictions common to all
+    %%% First: A (Op1) B = D (Op4) E
     apply_restriction(Op1i, A, B, Op4i, D, E),
-    %%% Segunda: L4 (OpL3) L3 = L1 (Op0) A
+    %%% Second: L4 (OpL3) L3 = L1 (Op0) A
     apply_restriction(OpL3i, LetterL4, LetterL3, Op0i, LetterL1, A),
-    %%% Terceira: L2 (OpL1) L1 = B (Op2) C
+    %%% Third: L2 (OpL1) L1 = B (Op2) C
     apply_restriction(OpL1i, LetterL2, LetterL1, Op2i, B, C).
-
+% predicate to apply the remaining restrictions
 remaining_restrictions(Operators, Operands):-
     [_,_|ListRest] = Operands,
     apply_remaining_restrictions(Operators, ListRest, 6, 3).
-% Para prevenir adicionar restrições com 3 pontas ou menos
+% To prevent adding restrictions with 3 tips or less 
 apply_remaining_restrictions(Operators, _, _, _):-
     length(Operators, Len),
     Len =< 6.
-% No caso de adicionar a última restrição, não chama recursivamente. Verifica se o indice 1 dos operadores é igual ao penultimo indice
+% In case it's adding the last restriction, stops the recursion and check if Index1 is the last but one index
 apply_remaining_restrictions(Operators, Operands, Index1, Index2):-
     length(Operators, OpsL),
     Test is OpsL - 2,
     Index1 == Test,
     apply_rem_rest_helper(Operators, Operands, Index1, Index2).
-% aplica a restrição, limita a lista dos operandos, busca os próximos indices e continua a recursividade
+% Applies the restriciton, limits the operand list, searches the next indexes and continues the recursivity
 apply_remaining_restrictions(Operators, Operands, Index1, Index2):-
     apply_rem_rest_helper(Operators, Operands, Index1, Index2),    
     [_,_|OperandsRest] = Operands,
     NewIndex1 is Index1+2,
     NewIndex2 is Index2+2,
     apply_remaining_restrictions(Operators, OperandsRest, NewIndex1, NewIndex2).
-
-% predicado para buscar os valores e aplicar a restrição intermédia
+% Predicate that declares the restriction to apply
 apply_rem_rest_helper(Operators, Operands, Index1, Index2):-
     element(1, Operands, D),
     element(2, Operands, C),
@@ -244,7 +249,7 @@ apply_rem_rest_helper(Operators, Operands, Index1, Index2):-
     nth0(Index2, Operators, Op2),
     apply_restriction(Op1, A, B, Op2, C, D).
 
-% predicado para aplicar a restrição da equação
+% Apply restrictions in the form of equations
 apply_restriction(Op1, Var1, Var2, Op2, Var3, Var4):-
     apply_restriction(Op1, Var1, Var2, Value),
     apply_restriction(Op2, Var3, Var4, Value).
@@ -254,26 +259,28 @@ apply_restriction(-, Var1, Var2, Value):-
     Var1-Var2 #= Value.
 apply_restriction(*, Var1, Var2, Value):-
     Var1*Var2 #= Value.
-% no caso da divisão aplica uma restrição extra: os valores da divisão têm de ser inteiros
+% in case of division a extra restrictions applies: the result must be an integer
 apply_restriction(/, Var1, Var2, Value):-
     % Var1/Var2 #= Value
     Var1 #= Value*Var2.
 
+% prints the operators ans operands in the form of 2 lists
 print_result(Operators, Operands):-
     write(Operators),write(Operands), nl.
 
-% tradução de inteiros para sinais
+% translations from integers to operators
 numb_signal(1,+).
 numb_signal(2,-).
 numb_signal(3,*).
 numb_signal(4,/).
 
-% transforma uma lista de inteiros para uma lista de sinais
+% transforms a list of integers to a list of operators
 opsi_to_opss([],[]).
 opsi_to_opss([H|T], [Sig|Temp]):-
   numb_signal(H, Sig),
   opsi_to_opss(T, Temp).
 
+% predicate to print a 5 tipped star and its corresponding lists
 print_star(Ops, Operands):-
     nth0(0, Operands, A),
     nth0(1, Operands, B),
