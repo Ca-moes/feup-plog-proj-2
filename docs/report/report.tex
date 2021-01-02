@@ -1,0 +1,104 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{graphicx}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+
+
+\graphicspath{ {figuras/} }
+
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{systeme}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+% The amsmath package provides a handful of options for displaying equations. You can choose the layout that better suits your document, even if the equations are really long, or if you have to include several equations in the same line.
+
+%encoding
+%--------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+%--------------------------------------
+%Portuguese-specific commands
+%--------------------------------------
+\usepackage[portuguese]{babel}
+%--------------------------------------
+%Hyphenation rules
+%--------------------------------------
+\usepackage{hyphenat}
+\hyphenation{mate-mática recu-perar ma-no equa-ções}
+
+\begin{document}
+%
+\title{Obtenção de instâncias e resoluções de puzzles do Problema de Decisão Gold Star}
+%
+\titlerunning{Solução de Puzzles Gold Star}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{André Gomes\orcidID{up201806224} e
+Gonçalo Teixeira\orcidID{up201806562}}
+%
+\authorrunning{Gonçalo Teixeira e André Gomes}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{FEUP-PLOG, Turma 3MIEIC06, Grupo Gold\_Star\_4 \\
+\url{http://web.fe.up.pt}}
+%
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+% Requested
+Começa-se por definir o objetivo deste projeto na Introdução, seguido de uma breve informação sobre cada ponto do relatório. Na descrição do problema explica-se em que é que consiste o puzzle Gold Star e como este se simplifica num sistema de equações. Na abordagem explicita-se as variáveis de decisão deste PSR juntamente com as restrições aplicadas aos operadores e ás variáveis de resultado. Esta secção é seguida de uma breve demonstração de como é feita a visualização das soluções, em formato estrela e em formato de lista, antes da maior secção, as experiências realizadas. São primeiro demonstrados os resultados da análise dimensional e como o tempo de execução cresce exponencialmente com a complexidade da estrela, seguido pela análise de estratégias de pesquisa, nomeadamente os melhores argumentos usados no labeling. Terminando o relatório com uma conclusão e possível trabalho futuro.
+
+\keywords{Configuração  \and Operadores \and Gold Star}
+\end{abstract}
+%
+%
+%
+\section{Introdução}
+\input{conteudo/1_introducao}
+
+\section{Descrição do Problema}
+\input{conteudo/2_descricao_do_problema}
+
+\section{Abordagem}
+\input{conteudo/3_abordagem}
+
+\section{Visualização da Solução}
+\input{conteudo/4_visualizacao_solucao}
+
+\section{Experiências e Resultados}
+\input{conteudo/5_experiencias_resultados}
+
+\section{Conclusões e Trabalho Futuro}
+\input{conteudo/6_conclusoes}
+
+\clearpage
+\appendix
+\section{Tabelas de dados}
+\input{conteudo/A_tabelas}
+\clearpage
+\section{Gráficos}
+\input{conteudo/B_graficos}
+\clearpage
+\section{Anexos}
+\input{conteudo/C_Anexos}
+
+\end{document}

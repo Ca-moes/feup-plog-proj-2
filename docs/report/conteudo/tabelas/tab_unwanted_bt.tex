@@ -1,0 +1,26 @@
+% necessário centrar os valores na tabela
+\begin{table}[ht]
+  \centering
+  \caption{Resultados de pesquisa de soluções para estrelas de diferentes dimensões com backtracking indesejado}
+    \begin{tabular}{rrlll}
+    \hline
+    \multicolumn{1}{l}{Tips} & \multicolumn{1}{l}{Restriction} & Solutions & Seconds & Records \\ \hline\hline
+    3     & \multicolumn{1}{l}{restricted} & one   & \multicolumn{1}{r}{0,047} & \multicolumn{1}{r}{23} \\
+          &       & all   & \multicolumn{1}{r}{0,047} & \multicolumn{1}{r}{132} \\
+          & \multicolumn{1}{l}{unrestricted} & one   & \multicolumn{1}{r}{0,172} & \multicolumn{1}{r}{76} \\
+          &       & all   & \multicolumn{1}{r}{0,172} & \multicolumn{1}{r}{264} \\
+    4     & \multicolumn{1}{l}{restricted} & one   & \multicolumn{1}{r}{1,765} & \multicolumn{1}{r}{82} \\
+          &       & all   & \multicolumn{1}{r}{1,813} & \multicolumn{1}{r}{239} \\
+          & \multicolumn{1}{l}{unrestricted} & one   & \multicolumn{1}{r}{7,453} & \multicolumn{1}{r}{397} \\
+          &       & all   & \multicolumn{1}{r}{7,473} & \multicolumn{1}{r}{738} \\
+    5     & \multicolumn{1}{l}{restricted} & one   & \multicolumn{1}{r}{61,844} & \multicolumn{1}{r}{522} \\
+          &       & all   & \multicolumn{1}{r}{62,203} & \multicolumn{1}{r}{781} \\
+          & \multicolumn{1}{l}{unrestricted} & one   & \multicolumn{1}{r}{336,515} & \multicolumn{1}{r}{3 567} \\
+          &       & all   & \multicolumn{1}{r}{339,359} & \multicolumn{1}{r}{5 071} \\
+    6     & \multicolumn{1}{l}{restricted} & one sol & \multicolumn{1}{r}{2142,828} & \multicolumn{1}{r}{4 996} \\
+          &       & all sol & \multicolumn{1}{r}{2199,500} & \multicolumn{1}{r}{15 886} \\
+          & \multicolumn{1}{l}{unrestricted} & one sol & unfinished & 27913… \\
+          &       & all sol & not\_run & --- \\ \hline
+    \end{tabular}%
+  \label{tab:unwanted_bt}%
+\end{table}%

@@ -1,0 +1,101 @@
+\begin{longtable}{llll}
+\caption{Resultados de testar todas as combinações de heuristica possiveis para encontrar configurações de operadores} \label{tab:test_heurisitcs_ops} \\
+
+\hline 
+\multicolumn{1}{l}{Next Var} & \multicolumn{1}{l}{Next Value} & Value Choice & \multicolumn{1}{l}{Seconds} \\ 
+\hline 
+\endfirsthead
+
+\multicolumn{3}{c}%
+{{\bfseries \tablename\ \thetable{} -- Continuação da página anterior}} \\
+\hline 
+\multicolumn{1}{l}{Next Var} & \multicolumn{1}{l}{Next Value} & Value Choice & \multicolumn{1}{l}{Seconds} \\ \hline 
+\endhead
+
+\hline \multicolumn{3}{|r|}{{Continua na próxima página}} \\ \hline
+\endfoot
+
+\hline \hline
+\endlastfoot
+
+\multicolumn{1}{l}{anti\_first\_fail} & \multicolumn{1}{l}{bisect} & down  & 24,141 \\
+          &       & up    & 24,828 \\
+          & \multicolumn{1}{l}{enum} & down  & 23,703 \\
+          &       & up    & 25,438 \\
+          & \multicolumn{1}{l}{median} & down  & 23,438 \\
+          &       & up    & 24,14 \\
+          & \multicolumn{1}{l}{middle} & down  & 23,484 \\
+          &       & up    & 23,75 \\
+          & \multicolumn{1}{l}{step} & down  & 25,984 \\
+          &       & up    & 24,266 \\ \hline
+    \multicolumn{1}{l}{ff} & \multicolumn{1}{l}{bisect} & down  & 24,312 \\
+          &       & up    & 25,235 \\
+          & \multicolumn{1}{l}{enum} & down  & 24,312 \\
+          &       & up    & 24,375 \\
+          & \multicolumn{1}{l}{median} & down  & 23,469 \\
+          &       & up    & 24,031 \\
+          & \multicolumn{1}{l}{middle} & down  & 23,375 \\
+          &       & up    & 23,703 \\
+          & \multicolumn{1}{l}{step} & down  & 24,297 \\
+          &       & up    & 23,984 \\ \hline
+    \multicolumn{1}{l}{ffc} & \multicolumn{1}{l}{bisect} & down  & 24,453 \\
+          &       & up    & 23,797 \\
+          & \multicolumn{1}{l}{enum} & down  & 23,281 \\
+          &       & up    & 24,844 \\
+          & \multicolumn{1}{l}{median} & down  & 23,75 \\
+          &       & up    & 23,89 \\
+          & \multicolumn{1}{l}{middle} & down  & 26,859 \\
+          &       & up    & 25,188 \\
+          & \multicolumn{1}{l}{step} & down  & 24,219 \\
+          &       & up    & 24,031 \\ \hline
+    \multicolumn{1}{l}{leftmost (default)} & \multicolumn{1}{l}{bisect} & down  & 24,234 \\
+          &       & up    & 24,063 \\
+          & \multicolumn{1}{l}{enum} & down  & 23,39 \\
+          &       & up    & 23,219 \\
+          & \multicolumn{1}{l}{median} & down  & 23,718 \\
+          &       & up    & 23,782 \\
+          & \multicolumn{1}{l}{middle} & down  & 23,797 \\
+          &       & up    & 23,953 \\
+          & \multicolumn{1}{l}{step (default)} & down  & 23,719 \\
+          &       & up(default) & 23,531 \\ \hline
+    \multicolumn{1}{l}{max} & \multicolumn{1}{l}{bisect} & down  & 23,922 \\
+          &       & up    & 24 \\
+          & \multicolumn{1}{l}{enum} & down  & 23,657 \\
+          &       & up    & 23,531 \\
+          & \multicolumn{1}{l}{median} & down  & 24,75 \\
+          &       & up    & 23,453 \\
+          & \multicolumn{1}{l}{middle} & down  & 25,485 \\
+          &       & up    & 25,062 \\
+          & \multicolumn{1}{l}{step} & down  & 23,75 \\
+          &       & up    & 24,579 \\ \hline
+    \multicolumn{1}{l}{max\_regret} & \multicolumn{1}{l}{bisect} & down  & 25,859 \\
+          &       & up    & 25,672 \\
+          & \multicolumn{1}{l}{enum} & down  & 25,688 \\
+          &       & up    & 25,625 \\
+          & \multicolumn{1}{l}{median} & down  & 25,796 \\
+          &       & up    & 25,985 \\
+          & \multicolumn{1}{l}{middle} & down  & 25,266 \\
+          &       & up    & 25,563 \\
+          & \multicolumn{1}{l}{step} & down  & 25,953 \\
+          &       & up    & 26,36 \\ \hline
+    \multicolumn{1}{l}{min} & \multicolumn{1}{l}{bisect} & down  & 25,594 \\
+          &       & up    & 24,703 \\
+          & \multicolumn{1}{l}{enum} & down  & 25,734 \\
+          &       & up    & 25,578 \\
+          & \multicolumn{1}{l}{median} & down  & 23,937 \\
+          &       & up    & 24,641 \\
+          & \multicolumn{1}{l}{middle} & down  & 24,406 \\
+          &       & up    & 24,547 \\
+          & \multicolumn{1}{l}{step} & down  & 24,656 \\
+          &       & up    & 24,157 \\ \hline
+    \multicolumn{1}{l}{occurrence} & \multicolumn{1}{l}{bisect} & down  & 24,813 \\
+          &       & up    & 25,125 \\
+          & \multicolumn{1}{l}{enum} & down  & 24,218 \\
+          &       & up    & 23,063 \\
+          & \multicolumn{1}{l}{median} & down  & 23,516 \\
+          &       & up    & 24,812 \\
+          & \multicolumn{1}{l}{middle} & down  & 24,328 \\
+          &       & up    & 23,859 \\
+          & \multicolumn{1}{l}{step} & down  & 23,469 \\
+          &       & up    & 23,531 \\ 
+\end{longtable}

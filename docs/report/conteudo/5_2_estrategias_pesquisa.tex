@@ -1,0 +1,18 @@
+\subsection{Estratégias de Pesquisa}
+% Requested
+
+Após analisar o problema durante as experiências anteriores, tentou-se criar um predicado \verb|variable(Sel)| para usar como argumento de labeling, baseado nas suposições de que, ao começar por atribuir valores ás variáveis que estão afetadas por divisões, seria possível eliminar muitos dos valores do domínio, já que a divisão tem de resultar num número inteiro e que como a operação de divisão não é comutativa, seria mais fácil eliminar possíveis valores porque da mesma forma que a anterior, têm de dar resultados inteiros.
+
+Após testar o predicado acima, não se obteve resultados positivos (Tab. \ref{tab:custom_heuristics} e Fig. \ref{gph:custom_heuristics}), já que o cálculo demorou em média mais 60\% que o uso de labeling sem argumentos. Com isto em mente decidiu-se testar todas as combinações possíveis de argumentos de labeling, tanto para a formação de configurações de operadores como para o predicado que tenta achar as soluções para as configurações.
+
+Encontra-se no Anexo A as tabelas \ref{tab:test_heurisitcs_ops} e \ref{tab:test_heuristics_solver} que contêm os resultados de testar todas as configurações possíveis de heurísticas para determinar qual delas realizava uma pesquisa mais rápida. Também no Anexo B se encontram as figuras \ref{gph:ops_heuristics_analysis} e \ref{gph:solver_heuristics_analysis} com os gráficos relativos às tabelas anteriores.
+
+No caso dos operadores não ocorre muita diferença entre os argumentos usados, sendo que a configuração mais lenta (ffc, middle, down) demorou apenas mais 3,8 segundos que a mais rápida (occurrence, enum, up). Já no caso dos operandos nota-se diferenças significativas entre os diferentes argumentos. A configuração mais rápida (min, middle, up) demorou 36,406 segundos enquanto que a mais lenta (occurrence, step, down) demorou 161,672 segundos, a configuração predefinida (leftmost, step, up) que corresponde ao labeling sem argumentos, demorou 81,609 segundos e das configurações com um argumento \verb|variable(Sel)|, a mais rápida demorou 104,469 segundos.
+
+Conclui-se daqui que a configuração mais rápida demorou apenas 22,5\% do tempo da mais lenta e 44,6\% da predefinida. Melhorias significativas, tendo em conta que o tempo de execução aumenta exponencialmente com o número de pontas da estrela.
+
+Com estas novas heurísticas descobertas fez-se uma última bateria de testes para verificar a diferença de tempos usando as melhores combinações de argumentos, resultando nos valores da tabela \ref{tab:best_heuristics} e no gráfico da figura \ref{gph:best_heuristics}.
+
+Estes resultados tomaram em média 66,9\% do tempo que os resultados ao usar labeling sem argumentos (tabela \ref{tab:unwanted_bt}). Não tendo em conta os resultados das estrelas de 3 pontas, que são obtidos quase instantaneamente, e por isso não foram muito afetados pela heuristica, este valor desce para 52,3\%.
+
+\input{conteudo/tabelas/tab_best_heuristics}

@@ -1,0 +1,29 @@
+\begin{figure}
+    \centering
+    \begin{tabular}{c}
+    \begin{lstlisting}[language=Prolog]
+    apply_restriction(Op0i, C, A, Op7i, I, F),
+    apply_restriction(Op1i, A, D, Op4i, G, J),
+    apply_restriction(Op9i, B, C, Op2i, D, E),
+    apply_restriction(Op8i, B, F, Op5i, H, J),
+    apply_restriction(Op3i, G, E, Op6i, I, H).
+    
+    % predicate to apply the equation restriction
+    apply_restriction(Op1, Var1, Var2, Op2, Var3, Var4):-
+        apply_restriction(Op1, Var1, Var2, Value),
+        apply_restriction(Op2, Var3, Var4, Value).
+    apply_restriction(+, Var1, Var2, Value):-
+        Var1+Var2 #= Value.
+    apply_restriction(-, Var1, Var2, Value):-
+        Var1-Var2 #= Value.
+    apply_restriction(*, Var1, Var2, Value):-
+        Var1*Var2 #= Value.
+    % in case of division, the operands must be integers
+    apply_restriction(/, Var1, Var2, Value):-
+        % Var1/Var2 #= Value
+        Var1 #= Value*Var2.
+    \end{lstlisting}
+    \end{tabular}
+    \caption{Nas primeiras 5 linhas está uma versão desactualizada de como se estavam a definir as restrições dos operandos, usando o predicado apply\_restriction/6 fica simples aplicar as restrições a cada equação}
+    \label{code:predicados_restricoes}
+\end{figure}

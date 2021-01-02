@@ -1,0 +1,8 @@
+\subsection{Variáveis de Decisão}
+% Requested
+
+Tendo como ponto de partida uma configuração do problema Gold Star como a da Fig.\ref{fig: gold_star_example}, é possível obter uma lista de operadores que servem como argumento para o predicado \verb|gold_star/2|.
+
+O predicado \verb|gold_star/2|, a partir de uma lista de operadores, consegue calcular uma solução para uma configuração, usando programação em lógica com restrições. Este predicado possui dez variáveis de decisão, uma para cada variável do sistema de equações, guardadas numa Lista \verb|Result|, cujo domínio é \verb|[0,9]|.
+
+Para obter configurações do problema temos o predicado \verb|operators/3|, que faz uso de restrições para criar configurações dos operadores do problema. Este predicado possui também 10 variáveis de decisão, cada uma correspondendo a um operador. O domínio é \verb|[1,4]|, para que cada operador corresponda a um número inteiro, de acordo com os predicados \verb|numb_signal/2|.

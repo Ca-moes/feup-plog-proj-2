@@ -1,0 +1,22 @@
+\subsection{Análise Dimensional}
+% Requested
+
+Na primeira experiência realizada testaram-se combinações de execução para estrelas de cinco pontas, consistindo em variações do uso de restrições e uso de \verb|! (cut)| no final do predicado de resolução para achar apenas uma ou todas as soluções para uma configuração. Originando os resultados da tabela \ref{tab:div_error}.
+
+\input{conteudo/tabelas/tab_div_error}
+
+Nesta primeira experiência não se reparou no erro da restrição de divisão comentada nas linhas finais da figura \ref{code:predicados_restricoes}. Com esta restrição errada foram criadas soluções inválidas, mas foi possível obter uma noção do tempo de execução de cada predicado, apontando numa boa direção, já que seria possível chegar ao objetivo proposto na introdução.
+
+Tendo corrigido esta restrição obteve-se os resultados da tabela \ref{tab:unwanted_bt} e o gráfico da figura \ref{gph:unwanted_bt}.
+
+\input{conteudo/tabelas/tab_unwanted_bt}
+
+A partir daqui obteve-se o tempo de execução de cada predicado e o número de resultados obtidos. A primeira conclusão que se retira destes dados é que o número de resultados obtidos é imensamente inferior ao esperado, vendo o caso da estrela de 5 estrelas, como contém 10 operadores, cada um tomando 1 de 4 valores possíveis, significa que é possível formar \(4^{10}\) configurações\footnote{1 048 576} de operadores, mas ao verificar os resultados de \verb|5-unrestricted-one|, apenas foram encontrados 3567 resultados, correspondentes a 0,34\% de todas as combinações possíveis. 
+
+Devido a mais um lapso de atenção, após o \verb|labeling| não encontrar solução, estavam a ser reescritas algumas restrições no processo de \verb|redo|. Com isto corrigido a experiência foi refeita, mas os resultados, na tabela \ref{tab:rmv_unwanted_bt} e gráfico da figura \ref{gph:without_unwanted_bt}, não foram muitos diferentes.
+
+A partir destes resultados é possível verificar a melhoria que a aplicação de restrições na determinação dos operadores causou. Em média, com o uso de restrições, o programa tomou 25,35\% do tempo que demoraria na sua contraparte sem restrições, com tendência a diminuir com o aumento de pontas da estrela. Para além disso, com o uso de restrições, foram achadas em média 27,22\% dos resultados que se obteriam sem restrições. Uma mudança significativa que tende a aumentar com o número de pontas da estrela.
+
+Ao analisar o gráfico (Fig. \ref{gph:unwanted_bt}) resultante da tabela \ref{tab:unwanted_bt} verifica-se que o tempo que demora a calcular todas as soluções cresce exponencialmente com o aumento do número de pontas da estrela, tal como o número de resultados, proveniente do gráfico da figura \ref{gph:solutions}.
+
+Com os resultados de \verb|5-unrestricted-all| alcançou-se o objetivo proposto na introdução deste relatório de obter um ficheiro que contenha todas as soluções possíveis deste puzzle. Na busca deste ficheiro obteve-se também todas as soluções possíveis para estrelas de 3 e 4 pontas.

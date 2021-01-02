@@ -1,0 +1,13 @@
+\begin{figure}
+    \centering
+    \begin{tabular}{c}
+    \begin{lstlisting}[language=Prolog]
+    bigger(_, []).
+    bigger(Op1, [Op | Rest]) :-
+        Op1 #>= Op,
+        bigger(Op1, Rest).
+    \end{lstlisting}
+    \end{tabular}
+    \caption{Predicado bigger/2 que recebe como primeiro argumento o primeiro elemento da lista a ser instanciado, e aplica a restrição \#>= a todos os restantes elementos. A condição termina quando não houver mais operadores á qual se possa aplicar a restrição}
+    \label{code:bigger}
+\end{figure}
