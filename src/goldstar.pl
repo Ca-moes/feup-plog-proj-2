@@ -1,5 +1,5 @@
-:- consult('results.pl').
-:- consult('menus.pl').
+:- compile('results.pl').
+:- compile('menus.pl').
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 :- use_module(library(random)).
