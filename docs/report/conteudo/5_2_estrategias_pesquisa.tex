@@ -1,7 +1,7 @@
 \subsection{Estratégias de Pesquisa}
 % Requested
 
-Após analisar o problema durante as experiências anteriores, tentou-se criar um predicado \verb|variable(Sel)| para usar como argumento de labeling, baseado nas suposições de que, ao começar por atribuir valores ás variáveis que estão afetadas por divisões, seria possível eliminar muitos dos valores do domínio, já que a divisão tem de resultar num número inteiro e que como a operação de divisão não é comutativa, seria mais fácil eliminar possíveis valores porque da mesma forma que a anterior, têm de dar resultados inteiros.
+Após analisar o problema durante as experiências anteriores, tentou-se criar um predicado \verb|variable(Sel)| para usar como argumento de labeling, baseado nas suposições de que, ao começar por atribuir valores às variáveis que estão afetadas por divisões, seria possível eliminar muitos dos valores do domínio, já que a divisão tem de resultar num número inteiro e que como a operação de divisão não é comutativa, seria mais fácil eliminar possíveis valores porque da mesma forma que a anterior, têm de dar resultados inteiros.
 
 Após testar o predicado acima, não se obteve resultados positivos (Tab. \ref{tab:custom_heuristics} e Fig. \ref{gph:custom_heuristics}), já que o cálculo demorou em média mais 60\% que o uso de labeling sem argumentos. Com isto em mente decidiu-se testar todas as combinações possíveis de argumentos de labeling, tanto para a formação de configurações de operadores como para o predicado que tenta achar as soluções para as configurações.
 
@@ -13,6 +13,6 @@ Conclui-se daqui que a configuração mais rápida demorou apenas 22,5\% do temp
 
 Com estas novas heurísticas descobertas fez-se uma última bateria de testes para verificar a diferença de tempos usando as melhores combinações de argumentos, resultando nos valores da tabela \ref{tab:best_heuristics} e no gráfico da figura \ref{gph:best_heuristics}.
 
-Estes resultados tomaram em média 66,9\% do tempo que os resultados ao usar labeling sem argumentos (tabela \ref{tab:unwanted_bt}). Não tendo em conta os resultados das estrelas de 3 pontas, que são obtidos quase instantaneamente, e por isso não foram muito afetados pela heuristica, este valor desce para 52,3\%.
+Estes resultados tomaram em média 66,9\% do tempo que os resultados ao usar labeling sem argumentos (tabela \ref{tab:unwanted_bt}). Não tendo em conta os resultados das estrelas de 3 pontas, que são obtidos quase instantaneamente, e por isso não foram muito afetados pela heurística, este valor desce para 52,3\%.
 
 \input{conteudo/tabelas/tab_best_heuristics}
